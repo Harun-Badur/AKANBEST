@@ -2,41 +2,65 @@
 
 ## Durum
 
-M0 tamam: framework'süz PHP iskeleti, App\\ autoloader, basit ortam yapılandırması ve health endpoint.
-Router, Request/Response, View, Database, Auth, Admin ve iş özellikleri yoktur.
-M1 çalışması mimar onayını bekler.
+M1 tamam: Router, Request/Response, View, Config, escape helper ve merkezi hata yönetimi.
+M0 App autoloader ve Env parser korunur. Framework, Composer, Node veya paket bağımlılığı yoktur.
+Stack: PHP 8.3 / MariaDB (M2+) / Apache ve .htaccess / vanilla HTML, CSS, JavaScript.
+Database, schema, Model, Controller, Auth, Admin ve iş özellikleri bu aşamada yoktur.
+M2, G-LOCALDB onayı ve mimar denetimini bekler.
 
-## Stack
-
-PHP 8.3 / MariaDB (ileriki aşamalar) / Apache ve .htaccess / vanilla HTML, CSS, JavaScript.
-Framework, Composer, Node veya üçüncü taraf paket bağımlılığı yoktur.
-M0 veritabanına bağlanmaz; DB ayarları yalnızca placeholder'dır.
-
-## Dosya yapısı
+## Dosyalar ve sözleşmeler
 
 Proje kökü: `C:\Users\PC\AppData\Local\Cline\Akanbest\akanbest-website`
 
 ```text
-akanbest-website/
-├── app/
-│   ├── bootstrap.php       # App\\ -> app/ autoloader ve ortam yüklemesi
-│   └── Core/Env.php        # Statik KEY=VALUE parser
-├── config/config.php      # app ve kullanılmayan db ayarları
-├── public/
-│   ├── index.php          # Front controller: health veya 404
-│   └── .htaccess
-├── storage/logs/.gitkeep
-├── .env.example
-├── .env                   # Yalnızca lokal, Git dışında
-├── .gitignore
-└── README.md
+app/bootstrap.php             App autoloader, Env, Helpers, merkezi handler kurulumu
+app/Core/Env.php              KEY=VALUE parser; süreç ortamını değiştirmez
+app/Core/Config.php           load(path), get('app.name', default)
+app/Core/Helpers.php          e(): ENT_QUOTES / ENT_SUBSTITUTE / UTF-8
+app/Core/Request.php          capture, method, path, query, post, header, ip
+app/Core/Response.php         body/status/headers; json/html/redirect; send
+app/Core/Router.php           get/post; dispatch(Request): Response
+app/Core/View.php             render(template, data): string
+config/config.php             app ayarları ve kullanılmayan DB placeholder'ları
+config/routes.php             [method, pattern, handler] route tablosu
+public/index.php              bootstrap -> Config -> Request -> routes -> dispatch -> send
+public/.htaccess              M0 dosyası değiştirilmedi
+templates/public/placeholder.php
+templates/errors/404.php
+templates/errors/500.php
+storage/logs/app.log           Runtime hata günlüğü; Git dışında
+.env.example                  Güvenli örnek değerler
+.env                          Yalnızca lokal, Git dışında
 ```
 
-## Lokal çalıştırma (Windows PowerShell)
+Route handler sözleşmesi: `function (Request $request, array $params): Response`.
+Router kayıt sırasını izler; literal rotalar çakışan parametreli rotadan önce gelir.
+`{param}` tek, boş olmayan path segmentini eşler; literal kısımlar regex olarak kaçırılır.
+Eşleşmeyen yol 404 HTML; yol eşleşip method eşleşmezse 405 ve `Allow` döner.
+GET/POST kayıtları desteklenir; otomatik HEAD/OPTIONS davranışı eklenmemiştir.
+Request path query'den ayrılır, bir kez rawurldecode uygulanır ve sondaki slash kaldırılır.
+Query/post anahtarsız çağrılırsa tüm dizi, anahtarla çağrılırsa değer veya varsayılan döner.
+`ip()` yalnızca REMOTE_ADDR kullanır; X-Forwarded-* güvenilmezdir.
 
-PHP runtime: `C:\Users\PC\AppData\Local\Cline\Akanbest\tools\php8.3\php.exe`
+View adları `public/placeholder` biçimindedir; templates kökü dışına çıkamaz.
+Veriler EXTR_SKIP ile çıkarılır; hata halinde View'in açtığı buffer temizlenir.
+Şablonlarda dinamik HTML metinleri `e()` ile kaçırılır. Layout/CSS sistemi yoktur.
 
-İlk kurulumda, mevcut `.env` dosyasının üzerine yazmadan:
+## Route tablosu
+
+| Method | Pattern | Sonuç |
+|---|---|---|
+| GET | /health | M0 JSON payload korunur; router=M1 eklenir |
+| GET | /healthz | Health alias |
+| GET | / | 200, M1 placeholder HTML |
+| GET | /kernel-test/fail | Yalnızca local: RuntimeException, merkezi 500 |
+| GET | /kernel-test/{token} | 200 JSON token |
+
+Kernel test rotaları geçicidir; M8'de kaldırılacaktır.
+Local olmayan ortamda fail literal rotası kaydedilmez; aynı yol genel token rotasına eşleşir.
+Health yalnızca uygulama/PHP açılışını gösterir; veritabanı kontrolü yapmaz.
+
+## Lokal çalıştırma (PowerShell)
 
 ```powershell
 Set-Location 'C:\Users\PC\AppData\Local\Cline\Akanbest\akanbest-website'
@@ -44,24 +68,24 @@ if (-not (Test-Path '.env')) { Copy-Item '.env.example' '.env' }
 & 'C:\Users\PC\AppData\Local\Cline\Akanbest\tools\php8.3\php.exe' -S 127.0.0.1:8000 -t public public/index.php
 ```
 
-`http://127.0.0.1:8000/health` ve `/healthz`: HTTP 200 JSON.
-`/` ve diğer yollar: HTTP 404 plain text. Sunucuyu Ctrl+C ile kapatın.
-PHP dahili sunucusu yalnızca lokal geliştirme içindir; Apache `.htaccess` dosyasını işlemez.
+`http://127.0.0.1:8000/health` üzerinden kontrol edin; sunucuyu Ctrl+C ile kapatın.
+PHP dahili sunucusu yalnızca lokal geliştirme içindir; .htaccess işlemez.
+Apache document root yalnızca public dizini olmalıdır. mod_rewrite, mod_headers ve
+ilgili .htaccess direktif izinleri gerekir. Apache/Natro/cPanel üzerinde test yapılmadı.
 
-Apache için document root yalnızca projenin `public` dizini olmalıdır.
-`mod_rewrite`, `mod_headers` ve ilgili `.htaccess` direktiflerine izin gereklidir.
-Apache/cPanel üzerinde M0 kapsamında kurulum veya test yapılmaz.
+## Hata yönetimi ve güvenlik
 
-## Ortam ve güvenlik
-
-- Secrets Git'e girmez. `.env`, loglar ve yüklenen dosyalar Git dışında tutulur.
-- `.env.example` yalnızca örnek değerler içerir; gerçek kimlik bilgileri eklenmez.
-- Env parser boş ve `#` yorum satırlarını atlar, ilk `=` karakterinde böler,
-  eşleşen dış tırnakları kaldırır. Değişken interpolasyonu ve satır içi yorum işleme yoktur.
-- Ortam değerleri sınıf belleğinde tutulur; süreç ortamı değiştirilmez.
-- `APP_DEBUG` boolean olarak ayrıştırılır; hata gösterimi yalnızca `APP_ENV=local` ise açıktır.
-- `.env` yoksa ortam `production`, debug `false` olur.
-- Hatalar `storage/logs/app.log` dosyasına yazılır; bu dizin runtime tarafından yazılabilir olmalıdır.
-- Health yalnızca uygulama/PHP açılışını gösterir; MariaDB sağlığını kontrol etmez.
-- Production, legacy DB ve Natro ile M0 kapsamında etkileşim kurulmaz.
-- Git repository lokaldir; remote ve push yoktur.
+- Secrets Git'e girmez: .env, loglar ve yüklemeler ignore edilir. Remote/push yoktur.
+- Env boş ve # yorum satırlarını atlar; ilk = karakterinde böler, eşleşen dış tırnakları kaldırır.
+  Interpolasyon ve satır içi yorum işleme yoktur. putenv kullanılmaz.
+- APP_DEBUG boolean ayrıştırılır. Ayrıntılı 500 yalnızca APP_ENV=local olduğunda gösterilir.
+  Diğer ortamlara exception mesajı/trace verilmez. Eksik .env güvenli production varsayımına döner.
+- Ham PHP display_errors kapalıdır; local ayrıntıları merkezi 500 şablonu gösterir.
+- PHP hataları ErrorException'a çevrilir; maskelenen hatalara saygı gösterilir.
+- Yakalanmamış exception ve shutdown fatal hataları storage/logs/app.log'a formatlı yazılır.
+  Trace argümanları kapalı, log mesajlarındaki satır sonları kaçırılmıştır.
+- 500 şablonunun kendisi hata verirse jenerik plain-text 500 fallback vardır.
+- Handler kaydından önceki parse/startup hataları uygulama tarafından yakalanamaz.
+  Bellek tükenmesi, yazılamayan log dizini ve önceden gönderilmiş HTTP başlıkları
+  uygulama handler'ının kontrolünü sınırlayabilir. Log dizini yazılabilir olmalıdır.
+- Production, legacy DB veya hosting ile etkileşim ve veritabanı bağlantısı yoktur.

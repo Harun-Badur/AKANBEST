@@ -20,4 +20,81 @@ spl_autoload_register(static function (string $class): void {
     }
 });
 
+require_once BASE_PATH . '/app/Core/Helpers.php';
+
+error_reporting(E_ALL);
+// The central handler owns all output, including local diagnostics.
+ini_set('display_errors', '0');
+ini_set('display_startup_errors', '0');
+ini_set('log_errors', '1');
+ini_set('error_log', STORAGE_PATH . '/logs/app.log');
+ini_set('zend.exception_ignore_args', '1');
+
+$handleFailure = static function (Throwable $exception): void {
+    static $handling = false;
+    if ($handling) {
+        return;
+    }
+    $handling = true;
+
+    // Keep each entry on one line, even when an exception message contains newlines.
+    $writeLog = static function (Throwable $error): void {
+        $entry = sprintf(
+            '[%s] %s: %s in %s:%d | %s',
+            gmdate('c'),
+            $error::class,
+            $error->getMessage(),
+            $error->getFile(),
+            $error->getLine(),
+            $error->getTraceAsString(),
+        );
+        @error_log(str_replace(["\r", "\n"], ['\\r', '\\n'], $entry) . PHP_EOL, 3, STORAGE_PATH . '/logs/app.log');
+    };
+
+    $writeLog($exception);
+    while (ob_get_level() > 0) {
+        if (!@ob_end_clean()) {
+            break;
+        }
+    }
+
+    try {
+        $data = ['local' => App\Core\Env::get('APP_ENV', 'production') === 'local'];
+        if ($data['local']) {
+            $data['message'] = $exception->getMessage();
+            $data['trace'] = $exception->getTraceAsString();
+        }
+        $response = App\Core\Response::html(App\Core\View::render('errors/500', $data), 500);
+        if (!headers_sent()) {
+            header_remove('Location');
+            $response->send();
+        } else {
+            echo $response->body;
+        }
+    } catch (Throwable $renderError) {
+        $writeLog($renderError);
+        if (!headers_sent()) {
+            http_response_code(500);
+            header_remove('Location');
+            header('Content-Type: text/plain; charset=utf-8');
+            header('X-Content-Type-Options: nosniff');
+        }
+        echo "500 - Internal Server Error\n";
+    }
+};
+
+set_exception_handler($handleFailure);
+set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
+    if (!(error_reporting() & $severity)) {
+        return false;
+    }
+    throw new ErrorException($message, 0, $severity, $file, $line);
+});
+register_shutdown_function(static function () use ($handleFailure): void {
+    $error = error_get_last();
+    if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        $handleFailure(new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']));
+    }
+});
+
 App\Core\Env::load(BASE_PATH . '/.env');

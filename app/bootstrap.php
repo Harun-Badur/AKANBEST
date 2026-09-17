@@ -98,3 +98,19 @@ register_shutdown_function(static function () use ($handleFailure): void {
 });
 
 App\Core\Env::load(BASE_PATH . '/.env');
+
+// Session wiring: cookie parameters are fixed before any session_start().
+// Session::start() itself is idempotent and called lazily at access points.
+// Env is used directly because Config::load() runs later in the front controller.
+if (PHP_SAPI !== 'cli') {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => App\Core\Env::get('APP_ENV', 'production') !== 'local',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    ini_set('session.use_strict_mode', '1');
+    session_name('akanbest_session');
+}

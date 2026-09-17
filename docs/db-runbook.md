@@ -66,3 +66,19 @@ Beklenen: 9 tablo, 5 foreign key, 5 unique index; tüm motorlar InnoDB.
   ardından tabloyu **elle** (phpMyAdmin Operations/Drop) kaldırıp düzeltilmiş DDL'i
   uygulayın. Bu adımlar bilinçli insan kararıdır; otomatikleştirilmez.
 - İlk canlı uygulama öncesi alınan yedek, geri dönüş noktasıdır.
+
+## 6. Admin hesabı seed (insan adımı)
+
+1. Staging sunucusunda, app deposunun bir kopyasında:
+   `php scripts/gen-admin-hash.php "<güçlü-parola>"` komutunu çalıştırın.
+   (Script yalnızca CLI'da çalışır; veritabanına bağlanmaz.)
+2. Çıktıdaki hash'i panoya kopyalayın; komut geçmişini temizleyin.
+3. phpMyAdmin → staging veritabanı → SQL sekmesi:
+
+```sql
+INSERT INTO `admins` (`name`, `email`, `password`, `created_at`, `updated_at`)
+VALUES ('<gerçek-ad>', '<staging-admin@example.com>', '<HASH>', NOW(), NOW());
+```
+
+4. Parolayı asla düz metin olarak not etmeyin; yalnızca hash saklanır.
+5. İlk girişten sonra parolayı panelden değiştirin (yeni hash üretip UPDATE ile).

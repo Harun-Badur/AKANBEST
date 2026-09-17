@@ -2,11 +2,11 @@
 
 ## Durum
 
-M1 tamam: Router, Request/Response, View, Config, escape helper ve merkezi hata yönetimi.
-M0 App autoloader ve Env parser korunur. Framework, Composer, Node veya paket bağımlılığı yoktur.
-Stack: PHP 8.3 / MariaDB (M2+) / Apache ve .htaccess / vanilla HTML, CSS, JavaScript.
-Database, schema, Model, Controller, Auth, Admin ve iş özellikleri bu aşamada yoktur.
-M2, G-LOCALDB onayı ve mimar denetimini bekler.
+M2 tamam: InnoDB/utf8mb4 MariaDB şeması (yalnızca CREATE TABLE IF NOT EXISTS),
+saf DSN üretimi, lazy PDO sarmalayıcı ve soyut Model tabanı.
+Yerel makinede MariaDB/MySQL KURULMAZ (sahip kararı, 2026-09-17); tools/mariadb yoktur.
+Şemayı uygulayan kod/script yoktur; ilk canlı uygulama staging'de insan onayıyla yapılır
+(adımlar: docs/db-runbook.md). Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler
 
@@ -21,6 +21,10 @@ app/Core/Request.php          capture, method, path, query, post, header, ip
 app/Core/Response.php         body/status/headers; json/html/redirect; send
 app/Core/Router.php           get/post; dispatch(Request): Response
 app/Core/View.php             render(template, data): string
+app/Core/Database.php         buildDsn/connect/pdo + select/insert/update/delete/transaction
+app/Models/Model.php          Soyut satır-tablosu tabanı (M4+ somut modeller)
+database/schema.sql           9 tablo; yalnızca CREATE TABLE IF NOT EXISTS
+docs/db-runbook.md            Staging/production şema adımları (insan adımları)
 config/config.php             app ayarları ve kullanılmayan DB placeholder'ları
 config/routes.php             [method, pattern, handler] route tablosu
 public/index.php              bootstrap -> Config -> Request -> routes -> dispatch -> send

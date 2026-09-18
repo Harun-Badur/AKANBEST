@@ -62,7 +62,7 @@ Hedef kolonlar (schema.sql satır 60–72): `product_id` NOT NULL,
 `image_path` VARCHAR(500) NOT NULL, `alt_text` NULL, `is_primary` DEFAULT 0,
 `sort_order` DEFAULT 0.
 
-1. `resim` ve `resim2` değerleri `|` karakterinden bölünür; her parça trim edilir;
+1. `resim` ve `resim2` değerleri `,` karakterinden bölünür; her parça trim edilir;
    boş parçalar atılır (V4).
 2. Her dosya adı için ayrı `product_images` satırı açılır.
 3. `image_path` stratejisi: `'uploads/<dosyaadi>'` (yeni docroot altındaki
@@ -77,7 +77,7 @@ Hedef kolonlar (schema.sql satır 60–72): `product_id` NOT NULL,
 ## 4. PRIMARY IMAGE
 
 1. Ürünün mevcut (dosyası doğrulanan) görsel listesi `resim`→`resim2` sırasıyla
-   dizilir; `|` içi sıra korunur.
+   dizilir; `,` içi sıra korunur.
 2. Listedeki ilk mevcut görsel `is_primary=1`, sonrakiler `is_primary=0` alır.
 3. `sort_order`: listedeki sıra (0, 1, 2…).
 4. Hiçbir görseli bulunamayan ürün: `product_images` satırı açılmaz, ürün
@@ -202,7 +202,3 @@ products.is_active, products.is_featured, product_images.image_path,
 product_images.is_primary, product_images.sort_order, product_images.alt_text,
 product_images.product_id.
 HEDEF-DIŞI (schema'da yok): categories.image_path YOK → kategori.resim hedefsiz.
-
-
-
-

@@ -89,6 +89,23 @@ $routes = [
     ['GET', '/admin/categories/{id}/edit', [App\Controllers\Admin\CategoryController::class, 'edit']],
     ['POST', '/admin/categories/{id}', [App\Controllers\Admin\CategoryController::class, 'update']],
     ['POST', '/admin/categories/{id}/delete', [App\Controllers\Admin\CategoryController::class, 'delete']],
+
+    ['GET', '/admin/client-references', [App\Controllers\Admin\ClientReferenceController::class, 'index']],
+    ['GET', '/admin/client-references/create', [App\Controllers\Admin\ClientReferenceController::class, 'create']],
+    ['POST', '/admin/client-references', [App\Controllers\Admin\ClientReferenceController::class, 'store']],
+    ['GET', '/admin/client-references/{id}/edit', [App\Controllers\Admin\ClientReferenceController::class, 'edit']],
+    ['POST', '/admin/client-references/{id}', [App\Controllers\Admin\ClientReferenceController::class, 'update']],
+    ['POST', '/admin/client-references/{id}/delete', [App\Controllers\Admin\ClientReferenceController::class, 'delete']],
+
+    ['GET', '/admin/pages', [App\Controllers\Admin\PageController::class, 'index']],
+    ['GET', '/admin/pages/create', [App\Controllers\Admin\PageController::class, 'create']],
+    ['POST', '/admin/pages', [App\Controllers\Admin\PageController::class, 'store']],
+    ['GET', '/admin/pages/{id}/edit', [App\Controllers\Admin\PageController::class, 'edit']],
+    ['POST', '/admin/pages/{id}', [App\Controllers\Admin\PageController::class, 'update']],
+    ['POST', '/admin/pages/{id}/delete', [App\Controllers\Admin\PageController::class, 'delete']],
+
+    ['GET', '/admin/settings', [App\Controllers\Admin\SettingController::class, 'index']],
+    ['POST', '/admin/settings/update', [App\Controllers\Admin\SettingController::class, 'update']],
 ];
 
 // Temporary kernel routes: remove in M8. The literal fail route must precede {token}.

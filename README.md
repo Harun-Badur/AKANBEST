@@ -2,9 +2,9 @@
 
 ## Durum
 
-M4 tamam: Admin shell (layout + dashboard placeholder) ve Kategoriler CRUD
-(list/create/edit/delete/reorder). Slug Türkçe transliterasyonludur; duplicate
-kontrolü, self-parent yasağı ve FK RESTRICT guard (hasProducts) uygulanır.
+M6-C tamam: Client References CRUD (+logo upload: MIME/finfo/uzantı whitelist,
+deterministik ad), Pages CRUD (otomatik slug + duplicate kontrolü, plain text
+içerik; WYSIWYG yok), Settings whitelist yönetimi (set-only, delete yok).
 Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler

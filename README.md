@@ -2,12 +2,10 @@
 
 ## Durum
 
-M3 tamam: Session (httponly/SameSite=Lax, ortam-bazlı secure), CSRF (hash_equals),
-kural tabanlı Validator + old flash, dosya tabanlı throttle (5 deneme/15 dk),
-fail-closed Auth (attempt + guard) ve admin login/logout route'ları.
-M2 DB katmanı korunur; yerel DB sunucusu yoktur, Auth fail-closed'dur.
-Gerçek admin login entegrasyon kanıtı staging'in ilk canlı uygulamasında alınacaktır.
-Login görünümü bilinçli olarak stilize edilmemiştir (tasarım M4/M8).
+M4 tamam: Admin shell (layout + dashboard placeholder) ve Kategoriler CRUD
+(list/create/edit/delete/reorder). Slug Türkçe transliterasyonludur; duplicate
+kontrolü, self-parent yasağı ve FK RESTRICT guard (hasProducts) uygulanır.
+Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler
 
@@ -28,6 +26,9 @@ app/Core/Csrf.php             hash_equals tabanlı token doğrulama
 app/Core/Validator.php        required/email/max/min/phone/in + old flash
 app/Core/Throttle.php         storage/throttle; 5 deneme / 15 dk pencere
 app/Core/Auth.php             attempt (fail-closed), guard, logout; ham SQL yok
+app/Core/Slug.php             Saf Türkçe slug üretimi (DB sorgusu yok)
+app/Models/Category.php       categories CRUD + tree + slugExists + hasProducts
+app/Controllers/Admin/CategoryController.php  Admin kategori aksiyonları
 app/Models/Model.php          Soyut satır-tablosu tabanı (M4+ somut modeller)
 templates/admin/login.php     Minimal login formu (csrf + e())
 scripts/gen-admin-hash.php    CLI parola hash üretici (DB yok; runbook adımı)

@@ -80,6 +80,15 @@ $routes = [
 
         return Response::json(['protected' => true, 'admin' => Auth::user()['admin_name']]);
     }],
+
+    ['GET', '/admin', [App\Controllers\Admin\CategoryController::class, 'dashboard']],
+    ['GET', '/admin/categories', [App\Controllers\Admin\CategoryController::class, 'index']],
+    ['GET', '/admin/categories/create', [App\Controllers\Admin\CategoryController::class, 'create']],
+    ['POST', '/admin/categories', [App\Controllers\Admin\CategoryController::class, 'store']],
+    ['POST', '/admin/categories/reorder', [App\Controllers\Admin\CategoryController::class, 'reorder']],
+    ['GET', '/admin/categories/{id}/edit', [App\Controllers\Admin\CategoryController::class, 'edit']],
+    ['POST', '/admin/categories/{id}', [App\Controllers\Admin\CategoryController::class, 'update']],
+    ['POST', '/admin/categories/{id}/delete', [App\Controllers\Admin\CategoryController::class, 'delete']],
 ];
 
 // Temporary kernel routes: remove in M8. The literal fail route must precede {token}.

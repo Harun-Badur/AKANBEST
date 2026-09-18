@@ -98,6 +98,7 @@ register_shutdown_function(static function () use ($handleFailure): void {
 });
 
 App\Core\Env::load(BASE_PATH . '/.env');
+App\Core\Config::load(BASE_PATH . '/config/config.php');
 
 // Session wiring: cookie parameters are fixed before any session_start().
 // Session::start() itself is idempotent and called lazily at access points.

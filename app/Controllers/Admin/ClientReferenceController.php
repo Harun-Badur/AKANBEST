@@ -217,4 +217,3 @@ final class ClientReferenceController
         return Response::redirect('/admin/client-references', 302);
     }
 }
-

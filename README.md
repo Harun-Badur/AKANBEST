@@ -2,9 +2,9 @@
 
 ## Durum
 
-M6-C tamam: Client References CRUD (+logo upload: MIME/finfo/uzantı whitelist,
-deterministik ad), Pages CRUD (otomatik slug + duplicate kontrolü, plain text
-içerik; WYSIWYG yok), Settings whitelist yönetimi (set-only, delete yok).
+M6-D1 tamam: Products CRUD (name, code, category_id, short/long description,
+specs_json/variants_json repeater, is_active/is_featured, sort_order).
+Görsel yükleme/product_images M6-D2 kapsamındadır.
 Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler

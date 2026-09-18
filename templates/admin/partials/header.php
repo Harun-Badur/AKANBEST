@@ -2,6 +2,7 @@
 <nav>
 <a href="/admin">Dashboard</a>
 <a href="/admin/categories">Kategoriler</a>
+<a href="/admin/products">Ürünler</a>
 <a href="/admin/client-references">Referanslar</a>
 <a href="/admin/pages">Sayfalar</a>
 <a href="/admin/settings">Ayarlar</a>

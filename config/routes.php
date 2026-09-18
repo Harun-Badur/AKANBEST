@@ -106,6 +106,13 @@ $routes = [
 
     ['GET', '/admin/settings', [App\Controllers\Admin\SettingController::class, 'index']],
     ['POST', '/admin/settings/update', [App\Controllers\Admin\SettingController::class, 'update']],
+
+    ['GET', '/admin/products', [App\Controllers\Admin\ProductController::class, 'index']],
+    ['GET', '/admin/products/create', [App\Controllers\Admin\ProductController::class, 'create']],
+    ['POST', '/admin/products', [App\Controllers\Admin\ProductController::class, 'store']],
+    ['GET', '/admin/products/{id}/edit', [App\Controllers\Admin\ProductController::class, 'edit']],
+    ['POST', '/admin/products/{id}', [App\Controllers\Admin\ProductController::class, 'update']],
+    ['POST', '/admin/products/{id}/delete', [App\Controllers\Admin\ProductController::class, 'delete']],
 ];
 
 // Temporary kernel routes: remove in M8. The literal fail route must precede {token}.

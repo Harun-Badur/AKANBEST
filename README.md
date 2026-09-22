@@ -2,10 +2,11 @@
 
 ## Durum
 
-M7 tamam: public frontend çekirdeği (site layout + head/header/footer partials,
-ana sayfa iskeleti, /kurumsal/{slug} pages render, güvenli 404).
-Admin katmanı ayrı tutulur (Site\* controller + templates/public/*).
-Kurumsal sayfa canlı render DB gerektirir → lokal'de ERTELENDİ.
+M8 tamam: public katalog (ürün listesi + ?kategori filtresi, ürün detayı + galeri,
+specs/variants decode+validate+e(), vanilla CSS katalog tasarımı).
+Category.findBySlug mevcut kullanıldı (DEĞİŞTİRME); ProductImage.allForProduct
+mevcut kullanıldı (MODIFY YOK); Product.activeList + findActiveBySlug eklendi.
+Liste/detay/filtre/galeri CANLI DB GEREKTİRİR → lokal'de ERTELENDİ.
 Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler

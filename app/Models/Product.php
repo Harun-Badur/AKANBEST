@@ -230,6 +230,30 @@ final class Product extends Model
         return parent::updateById($id, $patch);
     }
 
+    /** @return array<int, array<string, mixed>> */
+    public static function activeList(?int $categoryId = null): array
+    {
+        if ($categoryId === null) {
+            return Database::select(
+                'SELECT * FROM `products` WHERE `is_active` = 1 ORDER BY `sort_order` ASC, `name` ASC',
+            );
+        }
+
+        return Database::select(
+            'SELECT * FROM `products` WHERE `is_active` = 1 AND `category_id` = ? ORDER BY `sort_order` ASC, `name` ASC',
+            [$categoryId],
+        );
+    }
+
+    /** @return array<string, mixed>|array{} */
+    public static function findActiveBySlug(string $slug): array
+    {
+        return Database::selectOne(
+            'SELECT * FROM `products` WHERE `is_active` = 1 AND `slug` = ? LIMIT 1',
+            [$slug],
+        );
+    }
+
     /**
      * FK RESTRICT guard on categories is not relevant here; products has no
      * dependent rows in this milestone (product_images arrives in M6-D2 and is

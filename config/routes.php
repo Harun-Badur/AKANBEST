@@ -36,6 +36,8 @@ $routes = [
     ['GET', '/healthz', $health],
     ['GET', '/', [App\Controllers\Site\HomeController::class, 'index']],
     ['GET', '/kurumsal/{slug}', [App\Controllers\Site\PageController::class, 'show']],
+    ['GET', '/urunler', [App\Controllers\Site\CatalogController::class, 'index']],
+    ['GET', '/urun/{slug}', [App\Controllers\Site\ProductController::class, 'show']],
 
     ['GET', '/admin/login', $loginView],
     ['POST', '/admin/login', static function (Request $request, array $params): Response {

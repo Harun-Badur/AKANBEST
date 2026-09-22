@@ -4,6 +4,7 @@
 <a class="site-brand" href="/">Akan Best Ambalaj</a>
 <nav class="site-nav">
 <a href="/">Ana Sayfa</a>
+<a href="/urunler">Ürünler</a>
 <a href="/#kurumsal-sayfalar">Kurumsal</a>
 </nav>
 </div>

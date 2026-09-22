@@ -17,6 +17,7 @@
 <td><span class="badge <?= ((int) $row['is_featured'] === 1) ? 'badge-on' : 'badge-off' ?>"><?= ((int) $row['is_featured'] === 1) ? 'Evet' : 'Hayır' ?></span></td>
 <td>
 <a href="/admin/products/<?= (int) $row['id'] ?>/edit">Düzenle</a>
+<a href="/admin/products/<?= (int) $row['id'] ?>/images">Görseller</a>
 <form method="post" action="/admin/products/<?= (int) $row['id'] ?>/delete" style="display:inline" onsubmit="return confirm('Silinsin mi?')">
 <?= App\Core\Csrf::field() ?>
 <button type="submit">Sil</button>

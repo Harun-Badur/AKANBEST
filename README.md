@@ -2,9 +2,9 @@
 
 ## Durum
 
-M6-D1 tamam: Products CRUD (name, code, category_id, short/long description,
-specs_json/variants_json repeater, is_active/is_featured, sort_order).
-Görsel yükleme/product_images M6-D2 kapsamındadır.
+M6-D2 tamam: Ürün çoklu görsel yükleme (finfo+MIME + GD çift doğrulama,
+WebP dönüştürme max 1600px) ve product_images yönetimi (listele, primary ata,
+toplu alt_text+sort_order, sil+dosya temizliği).
 Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler

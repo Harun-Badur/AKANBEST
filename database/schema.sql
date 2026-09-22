@@ -27,10 +27,12 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `seo_description` VARCHAR(500) NULL DEFAULT NULL,
   `sort_order` INT NOT NULL DEFAULT 0,
   `is_active` TINYINT(1) NOT NULL DEFAULT 1,
+  `legacy_source_id` INT UNSIGNED NULL DEFAULT NULL,
   `created_at` DATETIME NULL DEFAULT NULL,
   `updated_at` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_categories_slug` (`slug`),
+  UNIQUE KEY `uk_categories_legacy_source_id` (`legacy_source_id`),
   KEY `idx_categories_parent_id` (`parent_id`),
   CONSTRAINT `fk_categories_parent` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -48,10 +50,12 @@ CREATE TABLE IF NOT EXISTS `products` (
   `is_active` TINYINT(1) NOT NULL DEFAULT 1,
   `is_featured` TINYINT(1) NOT NULL DEFAULT 0,
   `sort_order` INT NOT NULL DEFAULT 0,
+  `legacy_source_id` INT UNSIGNED NULL DEFAULT NULL,
   `created_at` DATETIME NULL DEFAULT NULL,
   `updated_at` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_products_slug` (`slug`),
+  UNIQUE KEY `uk_products_legacy_source_id` (`legacy_source_id`),
   KEY `idx_products_category_id` (`category_id`),
   KEY `idx_products_code` (`code`),
   CONSTRAINT `fk_products_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT

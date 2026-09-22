@@ -2,9 +2,10 @@
 
 ## Durum
 
-M6-D2 tamam: Ürün çoklu görsel yükleme (finfo+MIME + GD çift doğrulama,
-WebP dönüştürme max 1600px) ve product_images yönetimi (listele, primary ata,
-toplu alt_text+sort_order, sil+dosya temizliği).
+M7 tamam: public frontend çekirdeği (site layout + head/header/footer partials,
+ana sayfa iskeleti, /kurumsal/{slug} pages render, güvenli 404).
+Admin katmanı ayrı tutulur (Site\* controller + templates/public/*).
+Kurumsal sayfa canlı render DB gerektirir → lokal'de ERTELENDİ.
 Veritabanına bağlanılmamıştır; Production/legacy DB izoledir.
 
 ## Dosyalar ve sözleşmeler

@@ -34,8 +34,8 @@ $loginView = static function (Request $request, array $params): Response {
 $routes = [
     ['GET', '/health', $health],
     ['GET', '/healthz', $health],
-    ['GET', '/', static fn (Request $request, array $params): Response =>
-        Response::html(View::render('public/placeholder', ['app' => Config::get('app.name')]))],
+    ['GET', '/', [App\Controllers\Site\HomeController::class, 'index']],
+    ['GET', '/kurumsal/{slug}', [App\Controllers\Site\PageController::class, 'show']],
 
     ['GET', '/admin/login', $loginView],
     ['POST', '/admin/login', static function (Request $request, array $params): Response {

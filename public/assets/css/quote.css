@@ -1,0 +1,90 @@
+/* Homepage quote and contact: isolated from the hero and catalog. */
+.home-page .quote-section{scroll-margin-top:24px;color:#0b2036}
+.home-page .quote-main{position:relative;isolation:isolate;overflow:hidden;padding:80px 0;background:#fcf8f4}
+.home-page .quote-main::before{content:"";position:absolute;z-index:0;top:0;right:0;bottom:0;left:50%;background:linear-gradient(90deg,rgba(252,248,244,.96) 0%,rgba(252,248,244,.55) 14%,rgba(252,248,244,.16) 34%,rgba(252,248,244,.22) 100%),url('/assets/images/hero/hero-banner.jpg?v=2') center right/cover no-repeat;pointer-events:none}
+.home-page .quote-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center;width:100%;max-width:none;margin:0;padding:0}
+.home-page .quote-intro{min-width:0;display:flex;flex-direction:column;justify-content:center;padding:8px clamp(36px,3.5vw,64px) 8px clamp(24px,4vw,56px)}
+.home-page .quote-eyebrow{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:1.2px;color:#496078;margin-bottom:18px}
+.home-page .quote-eyebrow::before{content:"";width:10px;height:10px;border-radius:50%;background:#f56600}
+.home-page .quote-intro h2{font-size:clamp(36px,3.8vw,58px);line-height:1.08;letter-spacing:-1.8px;margin:0 0 24px;font-weight:800}
+.home-page .quote-intro h2 span{color:#f56600}
+.home-page .quote-intro>p{font-size:18px;line-height:1.6;color:#496078;margin:0;max-width:40rem}
+.home-page .quote-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;padding:0;margin:34px 0 0;gap:20px}
+.home-page .quote-benefits li+li{border-left:1px solid #dddfe1;padding-left:20px}
+.home-page .quote-benefit-icon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;background:#ffeadb;border-radius:12px;color:#f56600;margin-bottom:12px}
+.home-page .quote-benefit-icon svg{width:32px;height:32px}
+.home-page .quote-benefits h3{font-size:16px;line-height:1.35;margin:0 0 6px;font-weight:750}
+.home-page .quote-benefits p{font-size:14px;line-height:1.55;color:#496078;margin:0}
+.home-page .quote-panel{width:min(90%,720px);justify-self:center;align-self:center;padding:32px;border-radius:20px;background:rgba(255,255,255,.98);box-shadow:0 12px 36px rgba(24,36,48,.09);min-width:0}
+.home-page .quote-panel>h3{font-size:34px;line-height:1.2;letter-spacing:-1px;margin:0 0 10px;padding-left:16px;border-left:6px solid #f56600;font-weight:800}
+.home-page .quote-panel-lead{font-size:16px;line-height:1.5;color:#496078;margin:0 0 22px}
+.home-page .quote-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.home-page .quote-hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.home-page .quote-field{min-width:0}
+.home-page .quote-field label{display:block;font-size:12px;font-weight:600;margin:0 0 6px;color:#496078}
+.home-page .quote-input{display:flex;align-items:center;gap:10px;border:1px solid #dce0e7;border-radius:8px;background:#fcfcfd;padding:0 12px;min-height:48px}
+.home-page .quote-input:focus-within{border-color:#f56600;box-shadow:0 0 0 2px rgba(245,102,0,.12)}
+.home-page .quote-input svg{width:20px;height:20px;flex:0 0 20px}
+.home-page .quote-input input,.home-page .quote-input select,.home-page .quote-input textarea{width:100%;min-width:0;border:0;background:transparent;outline:0;color:#0b2036;font:inherit;font-size:14px;padding:12px 0;box-shadow:none;border-radius:0}
+.home-page .quote-input input{height:46px}
+.home-page .quote-input textarea{resize:vertical;min-height:76px;line-height:1.5}
+.home-page .quote-input textarea::placeholder{color:#64768a}
+.home-page .quote-input--message{align-items:flex-start}
+.home-page .quote-input--message svg{margin-top:14px}
+.home-page .quote-field--wide,.home-page .quote-submit{grid-column:1/-1}
+.home-page .quote-submit{justify-content:center;gap:12px;min-height:54px;width:100%;font-size:16px;border-radius:8px;background:#f56600;border-color:#f56600;color:#fff}
+.home-page .quote-submit:hover{background:#df5900;border-color:#df5900}
+.home-page .quote-submit svg{width:22px;height:22px}
+.home-page .quote-submit span{margin-left:12px}
+.home-page .quote-submit:disabled{opacity:.5;cursor:not-allowed}
+.home-page .quote-error{font-size:12px;color:#9e291c;margin:6px 0 0;line-height:1.4}
+.home-page .quote-feedback{padding:12px 14px;border:1px solid #e8b5af;border-radius:8px;background:#fff4f2;color:#86251b;font-size:14px;margin:0 0 18px}
+.home-page .quote-feedback--success{background:#edf7f0;border-color:#b9d9c2;color:#245a35}
+.home-page .quote-whatsapp{margin:0 0 18px}
+.home-page .quote-whatsapp .btn{text-decoration:none}
+.home-page .quote-contact{background:#0b2036;color:#fff;padding:36px 0}
+.home-page .quote-contact-grid{display:flex;gap:28px;align-items:flex-start}
+.home-page .quote-contact-intro{flex:1.6;min-width:0;max-width:520px}
+.home-page .quote-contact-eyebrow{display:block;font-size:13px;font-weight:600;letter-spacing:1.2px;border-left:4px solid #f56600;padding-left:10px;margin-bottom:12px}
+.home-page .quote-contact-intro h3{font-size:28px;line-height:1.25;margin:0 0 10px;font-weight:750;letter-spacing:-.6px;color:#fff}
+.home-page .quote-contact-intro h3 span{color:#ff7a1b}
+.home-page .quote-contact-intro p{color:#d0d9e1;font-size:15px;line-height:1.6;margin:0}
+.home-page .quote-contact-item{flex:1;min-width:0;border-left:1px solid rgba(255,255,255,.2);padding-left:24px}
+.home-page .quote-contact-icon{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);color:#ff7a1b;width:44px;height:44px;border-radius:10px;margin-bottom:10px}
+.home-page .quote-contact-icon svg{width:26px;height:26px}
+.home-page .quote-contact-item h4{margin:0 0 7px;font-size:14px;color:#fff}
+.home-page .quote-contact-item a,.home-page .quote-contact-item address{color:#fff;font-size:14px;line-height:1.6;font-style:normal;text-decoration:none;overflow-wrap:anywhere}
+.home-page .quote-contact-item a:hover{text-decoration:underline}
+@media(max-width:1024px){
+ .home-page .quote-main{padding:56px 0}
+ .home-page .quote-main::before{display:none}
+ .home-page .quote-grid{grid-template-columns:1fr;gap:36px}
+ .home-page .quote-intro{padding:0 24px}
+ .home-page .quote-intro h2{font-size:40px}
+ .home-page .quote-intro>p{font-size:16px}
+ .home-page .quote-panel{width:min(720px,calc(100% - 48px));padding:24px}
+ .home-page .quote-benefits{grid-template-columns:1fr;gap:16px;margin-top:24px}
+ .home-page .quote-benefits li{display:grid;grid-template-columns:44px 1fr;column-gap:12px}
+ .home-page .quote-benefits li+li{border:0;padding-left:0}
+ .home-page .quote-benefit-icon{grid-row:1/3;width:44px;height:44px;margin:0}
+ .home-page .quote-contact-grid{flex-wrap:wrap}
+ .home-page .quote-contact-intro{flex-basis:100%;max-width:none}
+}
+@media(max-width:768px){
+ .home-page .quote-main{padding:40px 0}
+ .home-page .quote-grid{gap:30px}
+ .home-page .quote-intro h2{font-size:36px;letter-spacing:-1px}
+ .home-page .quote-panel{padding:24px 20px}
+ .home-page .quote-panel>h3{font-size:30px}
+ .home-page .quote-contact-item{flex:1 1 200px}
+}
+@media(max-width:480px){
+ .home-page .quote-form{grid-template-columns:1fr;gap:14px}
+ .home-page .quote-intro{padding-inline:16px}
+ .home-page .quote-intro h2{font-size:32px}
+ .home-page .quote-panel{width:min(720px,calc(100% - 32px));padding:22px 18px;border-radius:16px}
+ .home-page .quote-benefits{gap:12px}
+ .home-page .quote-contact-intro h3{font-size:26px}
+ .home-page .quote-contact-item{border-left:0;padding-left:0}
+}
+.home-page .quote-section svg{display:block;flex-shrink:0;max-width:32px;max-height:32px}

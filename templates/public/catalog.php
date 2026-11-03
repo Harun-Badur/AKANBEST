@@ -1,18 +1,18 @@
 <?php declare(strict_types=1); ?>
-<?php ob_start(); ?>
+<?php $catalogPage = true; ob_start(); ?>
+<div class="site-page-head">
+<span class="catalog-kicker">AKAN BEST AMBALAJ / ÜRÜN KATALOĞU</span>
 <h1>Ürünlerimiz</h1>
+<p class="catalog-lead">Bant ve ambalaj ihtiyaçlarınıza uygun ürünleri keşfedin. Ürün detaylarını inceleyin, teklif talebinizi bizimle paylaşın.</p>
 <?php if (($filterName ?? null) !== null): ?>
-<p>Aktif filtre: <strong><?= e((string) $filterName) ?></strong>
-<a href="/urunler">Temizle</a></p>
+<div class="site-filter-bar">
+<span>Aktif filtre: <strong><?= e((string) $filterName) ?></strong></span>
+<a class="btn btn--ghost btn--sm" href="/urunler">Filtreyi temizle</a>
+</div>
 <?php endif; ?>
-<nav class="site-filters" aria-label="Kategoriye göre">
-<a href="/urunler" class="<?= (($activeSlug ?? '') === '' ? 'is-active' : '') ?>">Tümü</a>
-<?php foreach (($filterLinks ?? []) as $slug => $name): ?>
-<a href="/urunler?kategori=<?= e((string) $slug) ?>" class="<?= (($activeSlug ?? '') === (string) $slug ? 'is-active' : '') ?>"><?= e((string) $name) ?></a>
-<?php endforeach; ?>
-</nav>
+</div>
 <?php if (($rows ?? []) === []): ?>
-<p>Bu filtrede gösterilecek ürün bulunamadı.</p>
+<p class="site-empty">Bu filtrede gösterilecek ürün bulunamadı.</p>
 <?php endif; ?>
 <div class="site-grid">
 <?php foreach (($rows ?? []) as $row): ?>

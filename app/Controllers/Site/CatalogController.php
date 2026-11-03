@@ -41,7 +41,7 @@ final class CatalogController
             }
         }
 
-        $rows = Product::activeList($categoryId);
+        $rows = $filterSlug !== '' && $categoryId === null ? [] : Product::activeList($categoryId);
 
         $thumbs = [];
         foreach ($rows as $row) {
@@ -63,7 +63,7 @@ final class CatalogController
             'metaDescription' => 'Akan Best Ambalaj ürün kataloğu: kategorilere göre filtreleyin, ürün detaylarını inceleyin.',
             'rows' => $rows,
             'filterLinks' => $filterLinks,
-            'activeSlug' => $filterSlug === '' || $categoryName === null ? '' : $filterSlug,
+            'activeSlug' => $filterSlug,
             'filterName' => $categoryName,
             'categories' => $names,
             'thumbs' => $thumbs,

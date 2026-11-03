@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use RuntimeException;
-
 final class Throttle
 {
     private const MAX_ATTEMPTS = 5;
@@ -14,11 +12,16 @@ final class Throttle
     public static function dir(): string
     {
         $dir = STORAGE_PATH . '/throttle';
-        if (!is_dir($dir) && !@mkdir($dir, 0775, true) && !is_dir($dir)) {
-            throw new RuntimeException('Throttle directory is not writable.');
+        if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
+            self::log('Throttle directory is not writable.');
         }
 
         return $dir;
+    }
+
+    private static function log(string $message): void
+    {
+        error_log('[throttle] ' . str_replace(["\r", "\n"], ' ', $message));
     }
 
     private static function file(string $key): string
@@ -46,10 +49,17 @@ final class Throttle
 
     private static function write(string $key, int $count, int $first): void
     {
-        @file_put_contents(
-            self::file($key),
-            json_encode(['count' => $count, 'first' => $first], JSON_THROW_ON_ERROR),
-        );
+        try {
+            $written = @file_put_contents(
+                self::file($key),
+                json_encode(['count' => $count, 'first' => $first], JSON_THROW_ON_ERROR),
+            );
+            if ($written === false) {
+                self::log('Throttle counter could not be written.');
+            }
+        } catch (\Throwable) {
+            self::log('Throttle counter could not be written.');
+        }
     }
 
     /** Records an attempt; returns current count within the window. */
@@ -63,10 +73,7 @@ final class Throttle
         }
 
         $state['count'] = (int) $state['count'] + 1;
-        @file_put_contents(
-            self::file($key),
-            json_encode($state, JSON_THROW_ON_ERROR),
-        );
+        self::write($key, (int) $state['count'], (int) $state['first']);
 
         return (int) $state['count'];
     }

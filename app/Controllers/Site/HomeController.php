@@ -6,34 +6,78 @@ namespace App\Controllers\Site;
 
 use App\Core\Request;
 use App\Core\Response;
+use App\Core\Session;
 use App\Core\View;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\Page;
 
 /**
- * Public home page skeleton. Deliberately performs NO database queries:
- * corporate page links are static placeholders until M5-C import provides
- * the real slug list from the `pages` table (M8 refresh).
+ * Read-only B2B homepage.
+ *
+ * Read-only. Categories and products come from the database. Contact links
+ * come from configuration and stay hidden when empty.
  */
 final class HomeController
 {
-    /**
-     * Static link placeholders. Keys are slugs (pages.slug), values are labels.
-     * NOT derived from the database in M7 by design.
-     *
-     * @var array<string, string>
-     */
-    private const CORPORATE_LINKS = [
-        'hakkimizda' => 'Hakkımızda',
-        'vizyon-misyon' => 'Vizyon ve Misyon',
-        'kalite-politikasi' => 'Kalite Politikası',
-    ];
-
     public static function index(Request $request, array $params): Response
     {
+        $categoryRows = [];
+        $categoryNames = [];
+        foreach (Category::all() as $row) {
+            if ((int) $row['is_active'] !== 1) {
+                continue;
+            }
+            $id = (int) $row['id'];
+            $categoryNames[$id] = (string) $row['name'];
+            $categoryRows[] = [
+                'name' => (string) $row['name'],
+                'slug' => (string) $row['slug'],
+                'description' => trim((string) ($row['description'] ?? '')),
+            ];
+        }
+
+        $active = Product::activeList();
+        $products = [];
+        foreach ($active as $row) {
+            $products[] = [
+                'id' => (int) $row['id'],
+                'name' => (string) $row['name'],
+                'slug' => (string) $row['slug'],
+                'image' => self::primaryImage((int) $row['id']),
+                'category' => $categoryNames[(int) $row['category_id']] ?? null,
+            ];
+        }
+
+        Session::start();
         return Response::html(View::render('public/home', [
+            'quoteErrors' => Session::getFlash('quote_errors', []),
+            'quoteOld' => Session::getFlash('quote_old', []),
+            'quoteSuccess' => (string) Session::getFlash('quote_success', ''),
+            'quoteWhatsapp' => (string) Session::getFlash('quote_whatsapp', ''),
             'title' => 'Ana Sayfa',
             'seoTitle' => 'Akan Best Ambalaj',
-            'metaDescription' => 'Akan Best Ambalaj kurumsal web sitesi: ürünlerimiz, kurumsal bilgiler ve teklif talebi.',
-            'corporateLinks' => self::CORPORATE_LINKS,
+            'metaDescription' => 'Koli bandı, baskılı bant, kağıt bant, karton bant, streç film ve çöp poşeti için Akan Best Ambalaj ürün kataloğu.',
+            'fullBleed' => true,
+            'categories' => $categoryRows,
+            'products' => $products,
+            'categoryTotal' => count($categoryRows),
+            'productTotal' => count($active),
+            'aboutPage' => Page::findBySlug('hakkimizda'),
         ]));
+    }
+
+    /** Primary image path for a product, or the first image, or null. */
+    private static function primaryImage(int $productId): ?string
+    {
+        $images = ProductImage::allForProduct($productId);
+        foreach ($images as $image) {
+            if ((int) $image['is_primary'] === 1) {
+                return (string) $image['image_path'];
+            }
+        }
+
+        return isset($images[0]) ? (string) $images[0]['image_path'] : null;
     }
 }

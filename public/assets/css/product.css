@@ -1,0 +1,52 @@
+/* Product detail only; the catalog stylesheet supplies the unchanged header. */
+.product-page{background:#f8f9fa}
+.product-page .site-main{padding:36px 0 64px}
+.product-page .product-detail{max-width:1080px;margin:auto}
+.product-page .site-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;margin-bottom:32px;color:#596673}
+.product-page .site-breadcrumb [aria-current]{font-weight:600;color:#0b2036}
+.product-page .product-detail__grid{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:start}
+.product-page .product-detail__image{background:#fff;border:1px solid #eef0f2;border-radius:12px;box-shadow:0 3px 18px rgba(11,32,54,.04);aspect-ratio:1/1;overflow:hidden}
+.product-page .product-detail__image img{width:100%;height:100%;object-fit:contain;padding:24px}
+.product-page .product-detail__thumbs{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.product-page .product-detail__thumb{width:80px;height:64px;padding:4px;background:#fff;border:1px solid #e3e9ef;border-radius:8px;cursor:pointer;overflow:hidden}
+.product-page .product-detail__thumb[aria-pressed=true]{border-color:#ed6409}
+.product-page .product-detail__thumb img{width:100%;height:100%;object-fit:contain}
+.product-page .product-detail__summary h1{font-size:clamp(28px,3vw,38px);line-height:1.15;letter-spacing:-.035em;font-weight:700;margin:0 0 8px}
+.product-page .product-detail__category{color:#596673;font-size:13px;margin:0 0 22px}
+.product-page .product-detail__lead{font-size:15px;line-height:1.75;margin-bottom:20px}
+.product-page .product-detail__features{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:10px;font-size:14px}
+.product-page .product-detail__features li{display:flex;gap:10px;align-items:baseline;margin:0}
+.product-page .product-detail__features li>span{display:inline-flex;align-items:center;justify-content:center;flex:none;width:17px;height:17px;border-radius:50%;background:#0b2036;color:#fff;font-size:11px}
+.product-page .product-detail__actions{display:flex;flex-wrap:wrap;gap:12px}
+.product-page .product-detail__actions .btn{min-height:48px;padding:12px 24px;border-radius:7px;font-size:14px}
+.product-page .product-detail__whatsapp{background:#fff;border:1px solid #62b98b;color:#16834b}
+.product-page .product-detail__whatsapp:hover{background:#f1faf4;color:#126c3e}
+.product-page .product-detail__advantages{list-style:none;margin:32px 0;padding:24px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;background:#fff;border:1px solid #eef0f2;border-radius:12px;box-shadow:0 3px 18px rgba(11,32,54,.025)}
+.product-page .product-detail__advantages li{display:flex;gap:12px;align-items:center;font-size:12px;line-height:1.5;margin:0;overflow-wrap:anywhere}
+.product-page .product-detail__advantages svg{flex:none}
+.product-page .product-detail__tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.product-page .product-detail__tabs button{border:0;background:#f0f2f4;border-radius:6px;padding:13px 24px;color:#0b2036;font:600 14px var(--font-sans);cursor:pointer}
+.product-page .product-detail__tabs button[aria-selected=true]{background:#ed6409;color:#fff}
+.product-page .product-detail__panel{background:#fff;border:1px solid #eef0f2;border-radius:10px;padding:26px;min-height:110px;color:#3d4b59;font-size:15px;line-height:1.8}
+.product-page .product-detail__panel[hidden]{display:none}
+.product-page .product-detail__panel p{margin-bottom:14px}
+.product-page .product-detail__panel p:last-child{margin-bottom:0}
+.product-page .product-detail__panel h2{font-size:20px}
+@media(max-width:1000px){
+.product-page .product-detail__grid{gap:30px}
+.product-page .product-detail__advantages{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:768px){
+.product-page .site-main{padding:28px 0 48px}
+.product-page .product-detail__grid{grid-template-columns:1fr;gap:28px}
+.product-page .product-detail__image{max-width:480px;margin:auto}
+.product-page .product-detail__summary h1{font-size:30px}
+.product-page .product-detail__advantages{padding:20px;gap:20px}
+.product-page .product-detail__tabs button{padding:12px 16px;font-size:12px;flex:1}
+.product-page .product-detail__panel{padding:20px;font-size:14px}
+}
+@media(max-width:420px){
+.product-page .product-detail__advantages{grid-template-columns:1fr}
+.product-page .product-detail__actions .btn{width:100%}
+.product-page .product-detail__thumb{width:68px;height:58px}
+}

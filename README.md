@@ -65,22 +65,12 @@ Veriler EXTR_SKIP ile çıkarılır; hata halinde View'in açtığı buffer temi
 
 | Method | Pattern | Sonuç |
 |---|---|---|
-| GET | /health | M0 JSON payload korunur; router=M1 eklenir |
-| GET | /healthz | Health alias |
 | GET | / | 200, M1 placeholder HTML |
-| GET | /kernel-test/fail | Yalnızca local: RuntimeException, merkezi 500 |
-| GET | /kernel-test/{token} | 200 JSON token |
 
 | GET | /admin/login | 200, login formu (csrf hidden) |
 | POST | /admin/login | Csrf→419; Validator→hata flash; Auth::attempt |
 | POST | /admin/logout | 302 login'e; session flush + regenerate |
 | GET | /admin/guard-test | requireAdmin: 302 veya 200 JSON {protected, admin} |
-
-Kernel test rotaları geçicidir; M8'de kaldırılacaktır.
-`GET /kernel-test/session-seed` yalnızca APP_ENV=local'de tablodadır; sabit
-dummy değerler yazar (admin_id=1, admin_name='Test Admin'), girdi okumaz.
-Local olmayan ortamda fail literal rotası kaydedilmez; aynı yol genel token rotasına eşleşir.
-Health yalnızca uygulama/PHP açılışını gösterir; veritabanı kontrolü yapmaz.
 
 ## Lokal çalıştırma (PowerShell)
 
@@ -90,7 +80,7 @@ if (-not (Test-Path '.env')) { Copy-Item '.env.example' '.env' }
 & 'C:\Users\PC\AppData\Local\Cline\Akanbest\tools\php8.3\php.exe' -S 127.0.0.1:8000 -t public public/index.php
 ```
 
-`http://127.0.0.1:8000/health` üzerinden kontrol edin; sunucuyu Ctrl+C ile kapatın.
+`http://127.0.0.1:8000/` üzerinden kontrol edin; sunucuyu Ctrl+C ile kapatın.
 PHP dahili sunucusu yalnızca lokal geliştirme içindir; .htaccess işlemez.
 Apache document root yalnızca public dizini olmalıdır. mod_rewrite, mod_headers ve
 ilgili .htaccess direktif izinleri gerekir. Apache/Natro/cPanel üzerinde test yapılmadı.

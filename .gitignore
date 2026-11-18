@@ -12,3 +12,4 @@ database/export/
 *.sql
 vendor/
 .DS_Store
+.env.yedek

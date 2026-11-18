@@ -50,3 +50,10 @@
 .product-page .product-detail__actions .btn{width:100%}
 .product-page .product-detail__thumb{width:68px;height:58px}
 }
+.product-related{margin-top:48px;padding-top:28px;border-top:1px solid #e3e7ea}
+.product-related h2{font-size:1.35rem;margin:0 0 14px}
+.product-related ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.product-related li a{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid #cfd6dc;border-radius:6px;color:#0b1f3a;text-decoration:none;font-weight:500}
+.product-related li a:hover{border-color:#ed6409;color:#ed6409}
+.product-related p{margin:16px 0 0}
+.product-related p a{color:#0b1f3a;font-weight:600;display:inline-block;padding:10px 0}

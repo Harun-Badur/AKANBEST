@@ -1,8 +1,21 @@
 Options -Indexes
 RewriteEngine On
+
+# http→https ve www→non-www: tek adımda, tek 301 ile https://alanadi.com'a yönlenir.
+# Yerel geliştirme (localhost / 127.0.0.1) hariç tutulur.
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?([^:]+) [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml text/css application/javascript application/json image/svg+xml
+</IfModule>
 
 <IfModule mod_setenvif.c>
   SetEnvIf HTTPS "^on$" HTTPS_ON
@@ -16,6 +29,13 @@ RewriteRule ^ index.php [L]
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; form-action 'self' https://wa.me https://api.whatsapp.com; base-uri 'self'; frame-ancestors 'self'"
   Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS_ON
   Header always unset X-Powered-By
+  # CSS/JS sürüm parametresiyle (?v=) yüklenir; değişince URL de değişir.
+  <FilesMatch "\.(?:css|js|mjs)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(?:jpg|jpeg|png|gif|webp|svg|ico|avif)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
 </IfModule>
 
 <FilesMatch "(^\.|\.(?i:sql|log|env|bak|ini|zip|gz)$)">

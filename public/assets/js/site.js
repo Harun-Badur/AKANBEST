@@ -3,6 +3,16 @@
 (function () {
   'use strict';
 
+  // Kaydırınca header'a gölge/düz arka plan (is-scrolled)
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var onScroll = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
   var toggle = document.querySelector('.site-nav__toggle');
   var nav = document.querySelector('.site-nav');
 

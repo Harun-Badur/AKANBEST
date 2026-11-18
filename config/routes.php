@@ -11,6 +11,7 @@ $routes = [
     ['POST', '/teklif', [App\Controllers\Site\QuoteController::class, 'store']],
     ['GET', '/urunler', [App\Controllers\Site\HomeController::class, 'redirectCatalog']],
     ['GET', '/urun/{slug}', [App\Controllers\Site\ProductController::class, 'show']],
+    ['GET', '/robots.txt', [App\Controllers\Site\SitemapController::class, 'robots']],
     ['GET', '/sitemap.xml', [App\Controllers\Site\SitemapController::class, 'index']],
 ];
 

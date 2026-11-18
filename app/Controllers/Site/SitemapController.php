@@ -49,6 +49,20 @@ final class SitemapController
         return new Response($xml, 200, ['Content-Type' => 'application/xml; charset=utf-8']);
     }
 
+    public static function robots(Request $request, array $params): Response
+    {
+        $base = rtrim((string) Config::get('app.url', ''), '/');
+        $body = "User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /teklif
+
+Sitemap: " . $base . "/sitemap.xml
+";
+
+        return new Response($body, 200, ['Content-Type' => 'text/plain; charset=utf-8']);
+    }
+
     private static function x(string $value): string
     {
         return htmlspecialchars($value, ENT_XML1 | ENT_QUOTES, 'UTF-8');

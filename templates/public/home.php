@@ -71,8 +71,8 @@ ob_start();
 <section class="hp-section hp-section--alt" id="urunler">
   <div class="site-container">
     <div class="hp-section__head">
-      <span class="hp-kicker">ÜRÜN PORTFÖYÜ</span><h2>Ürünlerimiz</h2>
-      <p>Ambalajlama operasyonlarınızda kullanılan bant ve ambalaj ürünleri.</p>
+      <span class="hp-kicker">ÜRÜN PORTFÖYÜ</span><h2>Koli Bandı, Streç Film ve Ambalaj Ürünlerimiz</h2>
+      <p>Ambalajlama operasyonlarınızda kullanılan bant, streç film ve ambalaj ürünleri.</p>
     </div>
     <ul class="hp-prod-grid">
       <?php foreach ($products as $product): ?>
@@ -94,9 +94,6 @@ ob_start();
       </li>
       <?php endforeach; ?>
     </ul>
-    <p class="hp-section__more">
-      <a class="btn btn--primary" href="/#urunler">Tüm Ürünler</a>
-    </p>
   </div>
 </section>
 <?php endif; ?>
@@ -106,7 +103,7 @@ ob_start();
   <div class="site-container">
     <div class="hp-section__head">
       <span class="hp-kicker">KURUMSAL</span>
-      <h2>Akan Best Ambalaj</h2>
+      <h2>Akan Best Ambalaj Hakkında</h2>
     </div>
     <div class="site-content">
       <?php $aboutText = trim(strip_tags((string) ($aboutPage['content'] ?? ''))); ?>

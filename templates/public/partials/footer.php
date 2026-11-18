@@ -4,7 +4,7 @@ $sitePhone = \App\Core\Contact::phone();
 $siteEmail = \App\Core\Contact::email();
 $siteAddress = \App\Core\Contact::address();
 $siteWa = \App\Core\Contact::whatsappDigits();
-$sitePhoneLink = preg_replace('/\D+/', '', $sitePhone) ?? '';
+$sitePhoneLink = preg_replace('/[^\d+]/', '', $sitePhone) ?? '';
 ?>
 <footer class="site-footer">
   <div class="site-container">
@@ -20,6 +20,7 @@ $sitePhoneLink = preg_replace('/\D+/', '', $sitePhone) ?? '';
         <ul class="site-footer__nav">
           <li><a href="/">Ana Sayfa</a></li>
           <li><a href="/#urunler">Ürünler</a></li>
+          <li><a href="/#kurumsal">Kurumsal</a></li>
           <?php if (($homePage ?? false) === true): ?>
           <li><a href="/#teklif">Teklif Al</a></li>
           <?php endif; ?>

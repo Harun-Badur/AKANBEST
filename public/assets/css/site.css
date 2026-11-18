@@ -12,6 +12,7 @@
 :root{
   /* Renk — az sayıda, kurumsal */
   --c-brand:#0e4a73;
+  --c-header:#0B1F3A;
   --c-brand-dark:#0a3554;
   --c-brand-soft:#eef5fa;
   --c-brand-line:#cfe0ee;
@@ -138,25 +139,36 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{bo
    -------------------------------------------------------------------------- */
 .site-header{
   position:sticky;top:0;z-index:50;
-  background:var(--c-brand);color:var(--c-on-brand);
+  background:var(--c-header);color:var(--c-on-brand);
   border-bottom:1px solid rgba(255,255,255,.10);
 }
 .site-header--transparent,
 body:has(.hp-hero) .site-header{
   position:absolute;top:0;left:0;right:0;width:100%;
-  background:rgba(11,31,58,.18);
+  background:var(--c-header);
   backdrop-filter:blur(4px);
   -webkit-backdrop-filter:blur(4px);
   border-bottom:1px solid rgba(255,255,255,.12);
 }
-.site-header__inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);min-height:var(--header-h)}
+.site-header{transition:box-shadow .25s}
+.site-header.is-scrolled{box-shadow:0 2px 14px rgba(0,0,0,.28)}
+.site-header__inner{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);min-height:var(--header-h);min-width:0}
 .site-brand{
   color:var(--c-on-brand);font-weight:var(--fw-bold);font-size:var(--fs-lg);
   letter-spacing:-.01em;text-decoration:none;line-height:1.1;
+  display:inline-flex;align-items:center;gap:12px;
+  flex-shrink:0;white-space:nowrap;max-width:none;
 }
 .site-brand:hover{color:var(--c-on-brand);text-decoration:none}
-.site-brand__mark{display:inline-flex;align-items:center;gap:var(--sp-2)}
+.site-brand__mark{display:inline-flex;align-items:center;gap:12px;flex-shrink:0;white-space:nowrap;max-width:none}
+.site-brand__logo{height:32px;width:auto;max-width:none;flex:none;display:block}
+.site-brand__name{white-space:nowrap}
 .site-brand__dot{width:10px;height:10px;border-radius:var(--r-pill);background:var(--c-accent);flex:none}
+.error-page .site-header{
+  position:sticky;top:0;z-index:100;background:var(--c-header);
+  border-bottom:1px solid rgba(255,255,255,.16);
+}
+.error-page .site-header__inner{max-width:1300px;min-height:76px;padding-inline:24px}
 .site-nav{display:flex;align-items:center;gap:var(--sp-1)}
 .site-nav__list{display:flex;align-items:center;gap:var(--sp-1);list-style:none;margin:0;padding:0}
 .site-nav__link{
@@ -288,7 +300,8 @@ body:has(.hp-hero) .site-header{
    -------------------------------------------------------------------------- */
 .site-footer{background:var(--c-ink);color:#c6d0da;padding:var(--sp-7) 0 var(--sp-5);margin-top:var(--sp-7)}
 .site-footer__grid{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:var(--sp-5)}
-.site-footer__brand{color:#fff;font-weight:var(--fw-bold);font-size:var(--fs-md);margin-bottom:var(--sp-2)}
+.site-footer__brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:var(--fw-bold);font-size:var(--fs-md);margin-bottom:var(--sp-2)}
+.site-footer__logo{height:28px;width:auto;max-width:none;flex:none;display:block}
 .site-footer__tagline{margin:0;font-size:var(--fs-sm);color:#a8b4bf}
 .site-footer__nav{display:flex;flex-wrap:wrap;gap:var(--sp-4);list-style:none;margin:0;padding:0}
 .site-footer__nav a{color:#c6d0da;text-decoration:none;font-size:var(--fs-sm)}
@@ -311,10 +324,13 @@ body:has(.hp-hero) .site-header{
 @media (max-width:768px){
   :root{--fs-3xl:2rem;--fs-2xl:1.6rem;--fs-xl:1.4rem}
   .site-header__inner{min-height:56px}
+  .error-page .site-header__inner{min-height:60px;padding-inline:24px}
+  .error-page .site-nav.is-open{background:var(--c-header)}
+  .site-brand__logo{height:28px}
   .site-nav__toggle{display:inline-flex}
   .site-nav{
     position:absolute;left:0;right:0;top:100%;
-    background:var(--c-brand);border-top:1px solid rgba(255,255,255,.12);
+    background:var(--c-header);border-top:1px solid rgba(255,255,255,.12);
     box-shadow:var(--sh-md);display:none;
   }
   .site-nav.is-open{display:block}
@@ -327,6 +343,9 @@ body:has(.hp-hero) .site-header{
   .site-hero h1{max-width:none}
   .site-main{padding:var(--sp-5) 0 var(--sp-7)}
   .site-specs th{width:45%}
+}
+@media (max-width:639px){
+  .site-brand{font-size:14px}
 }
 
 /* Mobil (<=560): tek sütun grid, tam genişlik butonlar */

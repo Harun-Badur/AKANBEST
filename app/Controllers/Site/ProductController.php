@@ -43,15 +43,25 @@ final class ProductController
         }
 
         $category = Category::find((int) $product['category_id']);
+        $name = trim((string) ($product['name'] ?? ''));
+        $short = trim((string) ($product['short_description'] ?? ''));
+
+        $related = [];
+        foreach (Product::activeList() as $row) {
+            if ((int) $row['id'] === (int) $product['id']) {
+                continue;
+            }
+            $related[] = ['name' => (string) $row['name'], 'slug' => (string) $row['slug']];
+        }
 
         return Response::html(View::render('public/product', [
-            'title' => (string) ($product['name'] ?? ''),
-            'seoTitle' => null,
-            'metaDescription' => is_string($product['short_description'] ?? null)
-                ? (string) $product['short_description']
-                : null,
+            'related' => $related,
+            'title' => $name,
+            'seoTitle' => seo_title($name),
+            'metaDescription' => $short !== '' ? $short : product_meta_description($name),
             'product' => $product,
             'categoryName' => is_string($category['name'] ?? null) ? (string) $category['name'] : null,
+            'categorySlug' => is_string($category['slug'] ?? null) ? (string) $category['slug'] : null,
             'specs' => self::pairs($product['specs_json'] ?? null),
             'variants' => self::pairs($product['variants_json'] ?? null),
             'images' => ProductImage::allForProduct((int) $product['id']),

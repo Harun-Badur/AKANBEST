@@ -6,9 +6,9 @@
   --hp-orange:#ed6409;--hp-orange-2:#d95805;--hp-navy:#0b2036;
 }
 .catalog-page .site-container{padding-inline:clamp(22px,4vw,56px)}
-.catalog-page .site-header{position:relative;background:#0b2036;border-bottom:1px solid rgba(255,255,255,.16)}
-.catalog-page .site-header__inner{max-width:1300px;min-height:88px;padding-inline:24px}
-.catalog-page .site-brand{font-size:22px;max-width:140px;line-height:1.1;gap:10px}
+.catalog-page .site-header{position:sticky;top:0;z-index:100;background:var(--c-header);border-bottom:1px solid rgba(255,255,255,.16)}
+.catalog-page .site-header__inner{max-width:1300px;min-height:76px;padding-inline:24px}
+.catalog-page .site-brand{font-size:18px;max-width:none;line-height:1.1;gap:12px;white-space:nowrap;flex-shrink:0}
 .catalog-page .site-brand__dot{height:40px;width:5px;border-radius:0;background:#ee6509}
 .catalog-page .site-nav__list{gap:26px}
 .catalog-page .site-nav__link{padding:18px 4px;border-radius:0;font-size:16px;font-weight:600;color:#fff}
@@ -48,7 +48,7 @@
 .catalog-page .site-footer__nav{flex-direction:column;gap:12px}
 .catalog-page .site-footer__bottom{margin-top:50px;font-size:11px}
 @media(min-width:769px) and (max-width:1200px){
-.catalog-page .site-header__inner{padding-inline:5%;min-height:80px}
+.catalog-page .site-header__inner{padding-inline:5%;min-height:72px}
 .catalog-page .site-nav__list{gap:15px}
 .catalog-page .site-nav__link{font-size:14px}
 .catalog-page .site-grid{gap:18px}
@@ -59,10 +59,10 @@
 .catalog-page .site-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:768px){
-.catalog-page .site-header__inner{min-height:76px;padding-inline:24px}
-.catalog-page .site-brand{font-size:20px;max-width:135px}
+.catalog-page .site-header__inner{min-height:60px;padding-inline:24px}
+.catalog-page .site-brand{font-size:15px;max-width:none;white-space:nowrap;flex-shrink:0}
 .catalog-page .site-header__cta{display:none}
-.catalog-page .site-nav.is-open{top:76px;background:#0b2036}
+.catalog-page .site-nav.is-open{top:100%;background:var(--c-header)}
 .catalog-page .site-main{padding:48px 0 56px}
 .catalog-page .site-page-head{margin-bottom:32px}
 .catalog-page .catalog-lead{font-size:15px}
@@ -82,5 +82,8 @@
 .catalog-page .site-card-body{padding:22px}
 .catalog-page .site-card-title{font-size:18px}
 .catalog-page .site-footer__grid{grid-template-columns:1fr}
+}
+@media(max-width:639px){
+.catalog-page .site-brand{font-size:14px;white-space:nowrap;flex-shrink:0;max-width:none}
 }
 @media(prefers-reduced-motion:reduce){.catalog-page *{transition:none;scroll-behavior:auto}}

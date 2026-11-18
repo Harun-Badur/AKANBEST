@@ -25,11 +25,6 @@ $quoteField = static function (string $name, string $label, string $icon, string
     <?php if (isset($quoteErrors[$name])): ?><p class="quote-error" id="quote-error-<?= e($name) ?>"><?= e((string) $quoteErrors[$name]) ?></p><?php endif; ?>
   </div>
 <?php }; ?>
-<?php
-$quoteCss = BASE_PATH . '/public/assets/css/quote.css';
-$quoteCssVersion = file_exists($quoteCss) ? (int) filemtime($quoteCss) : 1;
-?>
-<link rel="stylesheet" href="/assets/css/quote.css?v=<?= $quoteCssVersion ?>">
 <section class="quote-section" id="teklif" aria-labelledby="quote-heading">
   <div class="quote-main">
     <div class="quote-grid">
@@ -83,7 +78,7 @@ $quoteCssVersion = file_exists($quoteCss) ? (int) filemtime($quoteCss) : 1;
   <div class="quote-contact">
     <div class="site-container quote-contact-grid">
       <div class="quote-contact-intro"><span class="quote-contact-eyebrow">İLETİŞİM</span><h3>İhtiyacınızı <span>bizimle paylaşın.</span></h3><p>Ürünlerimiz, fiyatlandırma ve özel talepleriniz için teklif formunu kullanabilirsiniz.</p></div>
-      <?php if (\App\Core\Contact::phone() !== ''): ?><div class="quote-contact-item"><span class="quote-contact-icon"><?= $quoteIcon('phone') ?></span><h4>Telefon</h4><a href="tel:<?= e(preg_replace('/\D+/', '', \App\Core\Contact::phone()) ?? '') ?>"><?= e(\App\Core\Contact::phone()) ?></a></div><?php endif; ?>
+      <?php if (\App\Core\Contact::phone() !== ''): ?><div class="quote-contact-item"><span class="quote-contact-icon"><?= $quoteIcon('phone') ?></span><h4>Telefon</h4><a href="tel:<?= e(preg_replace('/[^\d+]/', '', \App\Core\Contact::phone()) ?? '') ?>"><?= e(\App\Core\Contact::phone()) ?></a></div><?php endif; ?>
       <?php if (\App\Core\Contact::email() !== ''): ?><div class="quote-contact-item"><span class="quote-contact-icon"><?= $quoteIcon('email') ?></span><h4>E-posta</h4><a href="mailto:<?= e(\App\Core\Contact::email()) ?>"><?= e(\App\Core\Contact::email()) ?></a></div><?php endif; ?>
       <?php if (\App\Core\Contact::address() !== ''): ?><div class="quote-contact-item"><span class="quote-contact-icon"><?= $quoteIcon('pin') ?></span><h4>Adres</h4><address><?= e(\App\Core\Contact::address()) ?></address></div><?php endif; ?>
     </div>

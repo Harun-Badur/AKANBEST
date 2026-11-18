@@ -23,10 +23,15 @@ if (($productPage ?? false) === true && isset($primary) && is_array($primary) &&
     $ogImagePath = '/' . ltrim((string) $primary['image_path'], '/');
 }
 $ogImage = $appUrl . $ogImagePath;
+$assetUrl = static function (string $path): string {
+    $file = BASE_PATH . '/public' . $path;
+    return $path . (is_file($file) ? '?v=' . (int) filemtime($file) : '');
+};
 $ogType = (($productPage ?? false) === true) ? 'product' : 'website';
 
 $organization = [
     '@type' => 'Organization',
+    '@id' => $appUrl . '/#organization',
     'name' => (string) Config::get('app.name', 'Akan Best Ambalaj'),
     'url' => $appUrl . '/',
     'logo' => $appUrl . '/assets/images/logo/favicon-512.png',
@@ -46,14 +51,35 @@ if ($address !== '') {
         'streetAddress' => $address,
     ];
 }
-$graph = [$organization];
+if ($address !== '') {
+    $organization['@type'] = ['Organization', 'LocalBusiness'];
+    $organization['image'] = $ogImage;
+}
+$website = [
+    '@type' => 'WebSite',
+    '@id' => $appUrl . '/#website',
+    'url' => $appUrl . '/',
+    'name' => (string) Config::get('app.name', 'Akan Best Ambalaj'),
+    'inLanguage' => 'tr-TR',
+    'publisher' => ['@id' => $appUrl . '/#organization'],
+];
+$graph = [$organization, $website];
 
 $productName = (isset($product) && is_array($product)) ? trim((string) ($product['name'] ?? '')) : '';
 if (($productPage ?? false) === true && $productName !== '') {
     $productNode = [
         '@type' => 'Product',
         'name' => $productName,
+        'url' => $canonical,
     ];
+    $productCode = (isset($product['code']) && is_string($product['code'])) ? trim($product['code']) : '';
+    if ($productCode !== '') {
+        $productNode['sku'] = $productCode;
+    }
+    $productCategory = (isset($categoryName) && is_string($categoryName)) ? trim($categoryName) : '';
+    if ($productCategory !== '') {
+        $productNode['category'] = $productCategory;
+    }
     if ($headDescription !== '') {
         $productNode['description'] = $headDescription;
     }
@@ -66,14 +92,6 @@ if (($productPage ?? false) === true && $productName !== '') {
         ['name' => 'Ana Sayfa', 'item' => $appUrl . '/'],
         ['name' => 'Ürünler', 'item' => $appUrl . '/#urunler'],
     ];
-    $categoryName = (isset($categoryName) && is_string($categoryName)) ? trim($categoryName) : '';
-    $categorySlug = (isset($categorySlug) && is_string($categorySlug)) ? trim($categorySlug) : '';
-    if ($categoryName !== '' && $categorySlug !== '') {
-        $crumbs[] = [
-            'name' => $categoryName,
-            'item' => $appUrl . '/urunler?kategori=' . rawurlencode($categorySlug),
-        ];
-    }
     $crumbs[] = ['name' => $productName, 'item' => $canonical];
     $items = [];
     foreach ($crumbs as $crumb) {
@@ -109,7 +127,10 @@ $jsonLd = json_encode(
 <?php if ($headDescription !== ''): ?>
 <meta name="description" content="<?= e($headDescription) ?>">
 <?php endif; ?>
+<?php if (($noindex ?? false) !== true): ?>
 <link rel="canonical" href="<?= e($canonical) ?>">
+<?php endif; ?>
+<meta name="theme-color" content="#0b1f3a">
 <meta property="og:type" content="<?= e($ogType) ?>">
 <meta property="og:title" content="<?= e($headTitle) ?>">
 <?php if ($headDescription !== ''): ?>
@@ -119,6 +140,8 @@ $jsonLd = json_encode(
 <meta property="og:url" content="<?= e($canonical) ?>">
 <meta property="og:locale" content="tr_TR">
 <meta property="og:site_name" content="Akan Best Ambalaj">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="<?= e($headTitle) ?>">
 <?php if ($headDescription !== ''): ?>
@@ -128,20 +151,20 @@ $jsonLd = json_encode(
 <?php if (is_string($jsonLd) && $jsonLd !== ''): ?>
 <script type="application/ld+json"><?= $jsonLd ?></script>
 <?php endif; ?>
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="<?= e($assetUrl('/assets/css/site.css')) ?>">
 <?php if (($homePage ?? false) === true): ?>
-<link rel="stylesheet" href="/assets/css/home.css">
+<link rel="stylesheet" href="<?= e($assetUrl('/assets/css/home.css')) ?>">
 <?php
 $quoteCss = BASE_PATH . '/public/assets/css/quote.css';
 $quoteCssVersion = file_exists($quoteCss) ? (int) filemtime($quoteCss) : 1;
 ?>
 <link rel="stylesheet" href="/assets/css/quote.css?v=<?= $quoteCssVersion ?>">
 <?php endif; ?>
-<script defer src="/assets/js/site.js"></script>
+<script defer src="<?= e($assetUrl('/assets/js/site.js')) ?>"></script>
 <?php if (($catalogPage ?? false) === true): ?>
-<link rel="stylesheet" href="/assets/css/catalog.css">
+<link rel="stylesheet" href="<?= e($assetUrl('/assets/css/catalog.css')) ?>">
 <?php endif; ?>
 <?php if (($productPage ?? false) === true): ?>
-<link rel="stylesheet" href="/assets/css/product.css">
-<script defer src="/assets/js/product.js"></script>
+<link rel="stylesheet" href="<?= e($assetUrl('/assets/css/product.css')) ?>">
+<script defer src="<?= e($assetUrl('/assets/js/product.js')) ?>"></script>
 <?php endif; ?>

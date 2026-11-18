@@ -81,6 +81,15 @@ ob_start();
     </section>
     <?php endforeach; ?>
   </div>
+  <?php if (($related ?? []) !== []): ?>
+  <section class="product-related" aria-labelledby="related-heading">
+    <h2 id="related-heading">Diğer Ürünlerimiz</h2>
+    <ul>
+      <?php foreach ($related as $item): ?><li><a href="/urun/<?= e($item['slug']) ?>"><?= e($item['name']) ?></a></li><?php endforeach; ?>
+    </ul>
+    <p><a href="/#urunler">Tüm ürünleri görüntüle <span aria-hidden="true">→</span></a></p>
+  </section>
+  <?php endif; ?>
 </article>
 <?php $content = (string) ob_get_clean(); ?>
 <?php include BASE_PATH . '/templates/public/layout.php'; ?>

@@ -17,7 +17,7 @@ ob_start();
       <h1 class="hp-hero__title">İşinizin her aşamasında <span class="hp-hero__titleAccent">doğru ambalaj.</span></h1>
       <p class="hp-hero__lead">Bant ve ambalaj ihtiyaçlarınızı tek noktadan keşfedin. İşletmenize uygun ürünler için Akan Best Ambalaj ile iletişime geçin.</p>
       <div class="hp-hero__actions">
-        <a class="btn btn--accent" href="/urunler">Ürünleri İncele <span aria-hidden="true">→</span></a>
+        <a class="btn btn--accent" href="/#urunler">Ürünleri İncele <span aria-hidden="true">→</span></a>
         <a class="btn btn--onDark" href="/#teklif"><svg class="btn__icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h8l4 4v13H6z"/><path d="M14 3.5v4h4"/><path d="M9 12.5h6M9 16h6"/></svg> Teklif Al</a>
       </div>
     </div>
@@ -80,7 +80,7 @@ ob_start();
         <a class="hp-prod" href="/urun/<?= e((string) $product['slug']) ?>">
           <span class="hp-prod__media">
             <?php if ($product['image'] !== null): ?>
-            <img src="/<?= e((string) $product['image']) ?>" alt="<?= e((string) $product['name']) ?>" loading="lazy" decoding="async">
+            <img src="/<?= e((string) $product['image']) ?>" alt="<?= e((string) $product['name']) ?>"<?= img_dimensions_attr((string) $product['image']) ?> loading="lazy" decoding="async">
             <?php endif; ?>
           </span>
           <span class="hp-prod__body">
@@ -95,7 +95,7 @@ ob_start();
       <?php endforeach; ?>
     </ul>
     <p class="hp-section__more">
-      <a class="btn btn--primary" href="/urunler">Tüm Ürünler</a>
+      <a class="btn btn--primary" href="/#urunler">Tüm Ürünler</a>
     </p>
   </div>
 </section>

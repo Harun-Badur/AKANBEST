@@ -57,13 +57,33 @@ final class HomeController
             'quoteSuccess' => (string) Session::getFlash('quote_success', ''),
             'quoteWhatsapp' => (string) Session::getFlash('quote_whatsapp', ''),
             'title' => 'Ana Sayfa',
-            'seoTitle' => 'Akan Best Ambalaj',
-            'metaDescription' => 'Koli bandı, baskılı bant, kağıt bant, karton bant, streç film ve çöp poşeti için Akan Best Ambalaj ürün kataloğu.',
+            'seoTitle' => 'Koli Bandı, Streç Film ve Bant | Akan Best Ambalaj',
+            'metaDescription' => 'Koli bandı, streç film ve ambalaj bantlarını Akan Best Ambalaj kataloğunda inceleyin. İşletmenize uygun ürün için teklif talebinizi iletin.',
             'fullBleed' => true,
             'categories' => $categoryRows,
             'products' => $products,
             'categoryTotal' => count($categoryRows),
             'productTotal' => count($active),
+            'aboutPage' => Page::findBySlug('hakkimizda'),
+        ]));
+    }
+
+    public static function redirectCorporate(Request $request, array $params): Response
+    {
+        return Response::redirect('/#kurumsal', 301);
+    }
+
+    public static function redirectCatalog(Request $request, array $params): Response
+    {
+        return Response::redirect('/#urunler', 301);
+    }
+
+    public static function corporate(Request $request, array $params): Response
+    {
+        return Response::html(View::render('public/corporate', [
+            'title' => 'Kurumsal',
+            'seoTitle' => 'Kurumsal Koli Bandı ve Streç Film | Akan Best Ambalaj',
+            'metaDescription' => 'Akan Best Ambalaj’ın bant ve ambalaj ürünlerini keşfedin. Ürün özelliklerini inceleyin; ihtiyacınızı paylaşarak teklif isteyin.',
             'aboutPage' => Page::findBySlug('hakkimizda'),
         ]));
     }

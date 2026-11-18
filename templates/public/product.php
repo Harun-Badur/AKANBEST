@@ -12,7 +12,7 @@ ob_start();
 <article class="product-detail">
   <nav class="site-breadcrumb" aria-label="Sayfa yolu">
     <a href="/">Ana Sayfa</a><span aria-hidden="true">/</span>
-    <a href="/urunler">Ürünler</a><span aria-hidden="true">/</span>
+    <a href="/#urunler">Ürünler</a><span aria-hidden="true">/</span>
     <?php if (($categoryName ?? null) !== null): ?>
     <span><?= e((string) $categoryName) ?></span><span aria-hidden="true">/</span>
     <?php endif; ?>
@@ -22,14 +22,14 @@ ob_start();
     <div class="product-detail__gallery">
       <div class="product-detail__image">
         <?php if ($primary !== null): ?>
-        <img id="product-main-image" src="/<?= e((string) $primary['image_path']) ?>" alt="<?= e((string) ($primary['alt_text'] ?: $product['name'])) ?>" decoding="async" fetchpriority="high">
+        <img id="product-main-image" src="/<?= e((string) $primary['image_path']) ?>" alt="<?= e((string) ($primary['alt_text'] ?: $product['name'])) ?>"<?= img_dimensions_attr((string) $primary['image_path']) ?> decoding="async" fetchpriority="high">
         <?php endif; ?>
       </div>
       <?php if ($gallery !== []): ?>
       <div class="product-detail__thumbs" aria-label="Ürün görselleri">
         <?php foreach ($gallery as $index => $img): ?>
         <button type="button" class="product-detail__thumb" aria-pressed="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="<?= e((string) $product['name']) ?> — Görsel <?= $index + 1 ?>" data-image="/<?= e((string) $img['image_path']) ?>" data-alt="<?= e((string) ($img['alt_text'] ?: $product['name'])) ?>">
-          <img src="/<?= e((string) $img['image_path']) ?>" alt="" loading="lazy" decoding="async">
+          <img src="/<?= e((string) $img['image_path']) ?>" alt=""<?= img_dimensions_attr((string) $img['image_path']) ?> loading="lazy" decoding="async">
         </button>
         <?php endforeach; ?>
       </div>

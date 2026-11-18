@@ -3,9 +3,9 @@
 .home-page .site-container{padding-inline:clamp(22px,4vw,56px)}
 .home-page .site-main--flush{padding:0}
 .home-page .btn{border-radius:3px;box-shadow:none;transform:none;min-height:48px}
-.home-page .site-header{position:absolute;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border:0}
+.home-page .site-header{position:absolute;background:var(--c-header);backdrop-filter:none;-webkit-backdrop-filter:none;border:0}
 .home-page .site-header__inner{min-height:96px}
-.home-page .site-brand{font-size:20px;max-width:180px;line-height:1.2}
+.home-page .site-brand{font-size:20px;max-width:none;line-height:1.2;white-space:nowrap;flex-shrink:0}
 .home-page .site-brand__dot{width:4px;height:38px;border-radius:0;background:#e2711d}
 .home-page .site-nav__link{border-radius:0;padding:12px;font-size:14px}
 .home-page .site-nav__link[aria-current]{background:none;border-bottom:1px solid #e2711d}
@@ -68,7 +68,8 @@
 .home-page .site-footer__nav{flex-direction:column;gap:12px}
 .home-page .site-footer__contactList{gap:10px}
 .home-page .site-footer__bottom{margin-top:50px;font-size:11px}
-.home-page section[id]{scroll-margin-top:24px}
+html{scroll-behavior:smooth}
+.home-page section[id]{scroll-margin-top:calc(var(--header-h,68px) + 16px)}
 @media(min-width:769px) and (max-width:1100px){
 .home-page .hp-hero__text{max-width:360px}
 .home-page .hp-hero__title{font-size:46px}
@@ -77,7 +78,7 @@
 .home-page .hp-value-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:768px){
-.home-page .site-header{position:absolute;background:#0b2036}
+.home-page .site-header{position:absolute;background:var(--c-header)}
 .home-page .site-header__inner{min-height:76px}
 .home-page .site-brand{font-size:18px}
 .home-page .site-nav.is-open{background:#0b2036;top:76px}
@@ -117,9 +118,9 @@
 }
 @media(prefers-reduced-motion:reduce){.home-page *{scroll-behavior:auto;transition:none}}
 /* Reference composition: one uninterrupted photograph behind hero and trust. */
-.home-page .site-header{background:rgba(255,255,255,.035);border-bottom:1px solid rgba(255,255,255,.16);backdrop-filter:none;-webkit-backdrop-filter:none}
+.home-page .site-header{background:var(--c-header);border-bottom:1px solid rgba(255,255,255,.16);backdrop-filter:none;-webkit-backdrop-filter:none}
 .home-page .site-header__inner{max-width:1320px;min-height:88px;padding-inline:24px}
-.home-page .site-brand{font-size:22px;max-width:140px;line-height:1.1;gap:10px}
+.home-page .site-brand{font-size:18px;max-width:none;line-height:1.1;gap:12px;white-space:nowrap;flex-shrink:0}
 .home-page .site-brand__dot{height:40px;width:5px;background:#ee6509}
 .home-page .site-nav__list{gap:26px}
 .home-page .site-nav__link{padding:18px 4px;font-size:16px;font-weight:600;color:#fff}
@@ -167,10 +168,10 @@
 .home-page .hp-trust__body span{font-size:12px}
 }
 @media(max-width:768px){
-.home-page .site-header{background:rgba(255,255,255,.035)}
+.home-page .site-header{background:var(--c-header)}
 .home-page .site-header__inner{min-height:76px;padding-inline:24px}
-.home-page .site-brand{font-size:20px;max-width:135px}
-.home-page .site-nav.is-open{top:76px;background:#0b2036}
+.home-page .site-brand{font-size:15px;max-width:none;white-space:nowrap;flex-shrink:0}
+.home-page .site-nav.is-open{top:76px;background:var(--c-header)}
 .home-page .hp-hero{min-height:960px;aspect-ratio:auto;padding:0;display:flex;flex-direction:column}
 .home-page .hp-hero__media{position:absolute;inset:0;order:0;aspect-ratio:auto}
 .home-page .hp-hero__img{object-position:20% center}
@@ -212,7 +213,7 @@
 }
 /* Solid catalog header; viewport-aware hero and a local bottom transition. */
 .home-page .site-header.site-header--transparent{
-  position:relative;background:#0b2036;
+  position:relative;background:var(--c-header);
   border-bottom:1px solid rgba(255,255,255,.16);
   backdrop-filter:none;-webkit-backdrop-filter:none;
 }
@@ -292,4 +293,7 @@
     min-height:max(640px,calc(100svh - 76px));
   }
   .home-page .hp-hero__trust{padding:28px 32px}
+}
+@media(max-width:639px){
+  .home-page .site-brand{font-size:14px;white-space:nowrap;flex-shrink:0;max-width:none}
 }

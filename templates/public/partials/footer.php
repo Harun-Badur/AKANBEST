@@ -10,13 +10,16 @@ $sitePhoneLink = preg_replace('/\D+/', '', $sitePhone) ?? '';
   <div class="site-container">
     <div class="site-footer__grid">
       <div>
-        <p class="site-footer__brand">Akan Best Ambalaj</p>
+        <p class="site-footer__brand">
+          <img class="site-footer__logo" src="/assets/images/logo/akanbest-logo-mark-white.svg" alt="" width="74" height="28">
+          <span>Akan Best Ambalaj</span>
+        </p>
         <p class="site-footer__tagline">Kurumsal ambalaj ve bant çözümleri.</p>
       </div>
       <nav aria-label="Alt menü">
         <ul class="site-footer__nav">
           <li><a href="/">Ana Sayfa</a></li>
-          <li><a href="/urunler">Ürünler</a></li>
+          <li><a href="/#urunler">Ürünler</a></li>
           <?php if (($homePage ?? false) === true): ?>
           <li><a href="/#teklif">Teklif Al</a></li>
           <?php endif; ?>

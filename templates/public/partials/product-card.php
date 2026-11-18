@@ -7,7 +7,7 @@
 <a class="site-card-link" href="/urun/<?= e((string) $card['slug']) ?>">
 <div class="site-card-media">
 <?php if (!empty($cardThumb)): ?>
-<img class="site-card-image" src="/<?= e((string) $cardThumb) ?>" alt="<?= e((string) $card['name']) ?>" loading="lazy" decoding="async">
+<img class="site-card-image" src="/<?= e((string) $cardThumb) ?>" alt="<?= e((string) $card['name']) ?>"<?= img_dimensions_attr((string) $cardThumb) ?> loading="lazy" decoding="async">
 <?php endif; ?>
 </div>
 <div class="site-card-body">

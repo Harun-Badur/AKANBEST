@@ -23,12 +23,18 @@ final class CatalogController
         $filterSlug = trim((string) $request->query('kategori', ''));
         $categoryId = null;
         $categoryName = null;
+        $seoCategory = '';
+        $seoTitle = 'Koli Bandı ve Streç Film Kataloğu | Akan Best Ambalaj';
+        $metaDescription = 'Koli bandı, streç film ve ambalaj bantları kataloğunu inceleyin. Ürün detayına bakın, toptan tedarik için Akan Best Ambalaj’a teklif bırakın.';
 
         if ($filterSlug !== '') {
             $category = Category::findBySlug($filterSlug);
             if ($category !== []) {
                 $categoryId = (int) $category['id'];
                 $categoryName = (string) $category['name'];
+                $seoCategory = (string) $category['slug'];
+                $seoTitle = seo_title($categoryName);
+                $metaDescription = self::categoryDescription($categoryName);
             }
         }
 
@@ -59,8 +65,9 @@ final class CatalogController
 
         return Response::html(View::render('public/catalog', [
             'title' => 'Ürünlerimiz',
-            'seoTitle' => 'Ürünlerimiz — Akan Best Ambalaj',
-            'metaDescription' => 'Akan Best Ambalaj ürün kataloğu: kategorilere göre filtreleyin, ürün detaylarını inceleyin.',
+            'seoTitle' => $seoTitle,
+            'metaDescription' => $metaDescription,
+            'seoCategory' => $seoCategory,
             'rows' => $rows,
             'filterLinks' => $filterLinks,
             'activeSlug' => $filterSlug,
@@ -68,5 +75,26 @@ final class CatalogController
             'categories' => $names,
             'thumbs' => $thumbs,
         ]));
+    }
+
+    private static function categoryDescription(string $name): string
+    {
+        $text = $name . ' ürünlerini koli bandı, streç film ve ambalaj bantları kataloğunda inceleyin. Toptan tedarik için Akan Best Ambalaj’a teklif bırakın.';
+        if (mb_strlen($text) <= 160) {
+            return $text;
+        }
+
+        $shorter = $name . ' için koli bandı, streç film ve ambalaj bantlarını inceleyin. Toptan tedarik için Akan Best Ambalaj’a teklif bırakın.';
+        if (mb_strlen($shorter) <= 160 && mb_strlen($shorter) >= 120) {
+            return $shorter;
+        }
+
+        $cut = mb_substr($text, 0, 157);
+        $space = mb_strrpos($cut, ' ');
+        if ($space !== false && $space >= 120) {
+            $cut = mb_substr($cut, 0, $space);
+        }
+
+        return rtrim($cut, " \t.,;:") . '.';
     }
 }

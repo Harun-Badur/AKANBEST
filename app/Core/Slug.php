@@ -13,17 +13,24 @@ final class Slug
     public static function generate(string $text): string
     {
         $text = trim($text);
+        if (class_exists(\Normalizer::class)) {
+            $normalized = \Normalizer::normalize($text, \Normalizer::FORM_C);
+            if (is_string($normalized) && $normalized !== '') {
+                $text = $normalized;
+            }
+        }
 
-        $map = [
-            'ç' => 'c', 'Ç' => 'c',
-            'ğ' => 'g', 'Ğ' => 'g',
-            'ı' => 'i', 'İ' => 'i',
-            'ö' => 'o', 'Ö' => 'o',
-            'ş' => 's', 'Ş' => 's',
-            'ü' => 'u', 'Ü' => 'u',
-        ];
-        $text = strtr($text, $map);
         $text = mb_strtolower($text, 'UTF-8');
+        // İ lowercases to "i" plus a combining dot. Drop marks so that letter stays.
+        $text = (string) preg_replace('/\p{M}+/u', '', $text);
+        $text = strtr($text, [
+            'ç' => 'c',
+            'ğ' => 'g',
+            'ı' => 'i',
+            'ö' => 'o',
+            'ş' => 's',
+            'ü' => 'u',
+        ]);
         $text = (string) preg_replace('/[\s_\/\\\\|:;,.+]+/u', '-', $text);
         $text = (string) preg_replace('/[^a-z0-9-]+/u', '-', $text);
         $text = (string) preg_replace('/-+/', '-', $text);

@@ -46,10 +46,18 @@ if ($email !== '') {
 }
 $address = Contact::address();
 if ($address !== '') {
-    $organization['address'] = [
+    $organization['address'] = array_filter([
         '@type' => 'PostalAddress',
-        'streetAddress' => $address,
-    ];
+        'streetAddress' => (string) Config::get('contact.street', '') ?: $address,
+        'addressLocality' => (string) Config::get('contact.locality', ''),
+        'addressRegion' => (string) Config::get('contact.region', ''),
+        'postalCode' => (string) Config::get('contact.postal_code', ''),
+        'addressCountry' => 'TR',
+    ], static fn ($v): bool => $v !== '');
+    $legalName = (string) Config::get('contact.legal_name', '');
+    if ($legalName !== '') {
+        $organization['legalName'] = $legalName;
+    }
 }
 if ($address !== '') {
     $organization['@type'] = ['Organization', 'LocalBusiness'];

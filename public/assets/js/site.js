@@ -71,41 +71,117 @@
   } else if (typeof desktop.addListener === 'function') {
     desktop.addListener(resetOnDesktop);
   }
-  // Ana sayfada kaydırırken aktif bölümü menüde vurgula
+  // Ana sayfada kaydırırken aktif bölümü menüde vurgula (scroll tabanlı, rAF ile throttle).
+  // Kural: header + 80px çizgisini geçmiş SON bölüm aktif; eşleşme yoksa önceki durum korunur.
+  // Ana Sayfa yalnızca hero'dayken; sayfa sonunda/footer'da İletişim. Alt sayfalarda hiçbiri.
   function initScrollSpy() {
-    if (!('IntersectionObserver' in window)) {
-      return;
-    }
     var links = {};
     nav.querySelectorAll('a[data-section]').forEach(function (a) {
       links[a.getAttribute('data-section')] = a;
     });
-    var ids = ['urunler', 'kurumsal', 'teklif'];
-    var sections = ids.map(function (id) { return document.getElementById(id); })
+    var sections = ['urunler', 'kurumsal', 'teklif']
+      .map(function (id) { return document.getElementById(id); })
       .filter(Boolean);
-    if (!sections.length || !document.querySelector('.hp-hero, .home-page')) {
+    var hero = document.querySelector('.hp-hero');
+    if (!sections.length || !hero) {
       return;
     }
-    var visible = {};
-    function mark() {
-      var current = 'top';
-      sections.forEach(function (sec) {
-        if (visible[sec.id]) { current = sec.id; }
-      });
-      Object.keys(links).forEach(function (key) {
-        if (key === current) {
-          links[key].setAttribute('aria-current', 'page');
+
+    var current = null;
+    var locked = null;     // menü tıklamasıyla sabitlenen hedef
+    var lockTimer = 0;
+    var ticking = false;
+
+    function setActive(key) {
+      if (key === current) { return; }
+      current = key;
+      Object.keys(links).forEach(function (k) {
+        if (k === key) {
+          links[k].setAttribute('aria-current', 'page');
         } else {
-          links[key].removeAttribute('aria-current');
+          links[k].removeAttribute('aria-current');
         }
       });
     }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        visible[entry.target.id] = entry.isIntersecting;
+
+    function compute() {
+      ticking = false;
+      if (locked) {
+        setActive(locked);
+        return;
+      }
+      var line = (header ? header.getBoundingClientRect().height : 64) + 80;
+      var doc = document.documentElement;
+      if (window.scrollY + window.innerHeight >= doc.scrollHeight - 2) {
+        setActive('teklif');
+        return;
+      }
+      var found = null;
+      sections.forEach(function (sec) {
+        if (sec.getBoundingClientRect().top <= line) { found = sec.id; }
       });
-      mark();
-    }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
-    sections.forEach(function (sec) { observer.observe(sec); });
+      if (found) {
+        setActive(found);
+      } else if (hero.getBoundingClientRect().bottom > line) {
+        setActive('top');
+      }
+      // aksi halde önceki aktif durum korunur
+    }
+
+    function schedule() {
+      if (!ticking) {
+        ticking = true;
+        // rAF durdurulan (gizli/arka plan) sekmelerde takılmasın diye zaman aşımı yedeği
+        var done = false;
+        var run = function () {
+          if (!done) { done = true; compute(); }
+        };
+        window.requestAnimationFrame(run);
+        window.setTimeout(run, 100);
+      }
+    }
+
+    function release() {
+      locked = null;
+      schedule();
+    }
+
+    // Kaydırma durunca (150ms sessizlik) kilidi bırak; kullanıcı müdahale ederse hemen bırak
+    window.addEventListener('scroll', function () {
+      if (locked) {
+        window.clearTimeout(lockTimer);
+        lockTimer = window.setTimeout(release, 150);
+      }
+      schedule();
+    }, { passive: true });
+    ['wheel', 'touchstart', 'keydown'].forEach(function (name) {
+      window.addEventListener(name, function () {
+        if (locked) { window.clearTimeout(lockTimer); release(); }
+      }, { passive: true });
+    });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('load', schedule);
+
+    // Menü tıklaması: hedef bölümü hemen sabitle, kaydırma bitince normal moda dön
+    nav.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[data-section]');
+      var key = link && link.getAttribute('data-section');
+      if (!key || key === 'top' || !links[key]) { return; }
+      locked = key;
+      setActive(key);
+      window.clearTimeout(lockTimer);
+      lockTimer = window.setTimeout(release, 1200); // scroll olayı hiç gelmezse (zaten hedefteyse)
+    });
+    var cta = document.querySelector('.site-header__cta a[href="/#teklif"]');
+    if (cta) {
+      cta.addEventListener('click', function () {
+        locked = 'teklif';
+        setActive('teklif');
+        window.clearTimeout(lockTimer);
+        lockTimer = window.setTimeout(release, 1200);
+      });
+    }
+
+    compute();
   }
 })();

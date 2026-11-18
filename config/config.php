@@ -34,5 +34,10 @@ return [
         'phone' => trim((string) Env::get('CONTACT_PHONE', '')),
         'email' => trim((string) Env::get('CONTACT_EMAIL', '')),
         'address' => trim((string) Env::get('CONTACT_ADDRESS', '')),
+        'street' => trim((string) Env::get('CONTACT_STREET', 'Başpınar OSB Mah. Kamil Şerbetçi Bulvarı 83306 Nolu Cad. No:7')),
+        'locality' => trim((string) Env::get('CONTACT_LOCALITY', 'Şehitkamil')),
+        'region' => trim((string) Env::get('CONTACT_REGION', 'Gaziantep')),
+        'postal_code' => trim((string) Env::get('CONTACT_POSTAL_CODE', '27000')),
+        'legal_name' => trim((string) Env::get('LEGAL_NAME', 'Akan Best Ambalaj Gıda San. Tic. Ltd. Şti.')),
     ],
 ];

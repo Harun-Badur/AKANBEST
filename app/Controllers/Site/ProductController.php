@@ -18,6 +18,15 @@ use App\Models\ProductImage;
  */
 final class ProductController
 {
+    /** Eski slug => güncel slug (akanbest_work_pre_seo.sql ile akanbest_live.sql karşılaştırması). */
+    private const LEGACY_SLUGS = [
+        'cift-tarafl-bantlar' => 'cift-tarafli-bantlar',
+        'kat-bant' => 'kagit-bant',
+        'dokunmam-bant' => 'dokunmamis-bant',
+        'baskl-bant' => 'baskili-bant',
+        'cop-poeti' => 'cop-poseti',
+    ];
+
     /**
      * Decodes a stored JSON pairs column into label/value rows.
      * Stored data is trusted only after shape validation.
@@ -38,6 +47,10 @@ final class ProductController
         }
 
         $product = Product::findActiveBySlug($slug);
+        if ($product === [] && isset(self::LEGACY_SLUGS[$slug])) {
+            // Eski (Türkçe karakteri düşmüş) slug'lar: güncel adrese kalıcı yönlendirme.
+            return Response::redirect('/urun/' . self::LEGACY_SLUGS[$slug], 301);
+        }
         if ($product === []) {
             return Response::html(View::render('errors/404'), 404);
         }
